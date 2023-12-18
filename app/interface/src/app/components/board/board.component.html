@@ -1,28 +1,14 @@
 <div class="tiles" [style.height]="board_heigth +'px'" [style.width]="board_width + 'px'">
-    @for (img of coordinats; track $index) {
-    <img [src]="img.img_src" [style.width]="(scale * img_with)  + 'px'" [style.height]="(scale * img_heigt) + 'px'"
-        [style.left]="img.x + 'px'" [style.top]="img.y + 'px'" />
-
-    <div class="dice" [style.left]="(img.x) + 'px'" [style.top]="(img.y) + 'px'"
-        [style.width]="(scale * img_with)  + 'px'" [style.height]="(scale * img_heigt) + 'px'">
-        <span>{{img.dice}}</span>
-    </div>
-
-
+    @for (img of tiles; track $index) {
+        <app-tile [tile]="img"></app-tile>
     }
 
-
     @for (b of buildings; track $index) {
-    <mat-icon aria-hidden="false" [fontIcon]="b.type" [style.left]="(b.x) + 'px'" [style.top]="(b.y) + 'px'"
-        [style.color]="b.color"></mat-icon>
+        <app-building [building]="b"></app-building>
     }
 
     @for (s of streets; track $index) {
-    <div class="street" [style.left]="(s.x) + 'px'" [style.top]="(s.y) + 'px'" [style.width]="s.length + 'px'"
-        [style.height]="s.heigth + 'px'" [style.background-color]="s.color" 
-        [style.transform]="'translate(-50%, -50%) rotate('+s.rotation+'deg)'"></div>
+        <app-street [s]="s"></app-street>
     }
-
-
 
 </div>

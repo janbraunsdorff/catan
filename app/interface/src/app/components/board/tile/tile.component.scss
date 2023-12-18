@@ -1,0 +1,17 @@
+
+img {
+    position: absolute;
+}
+
+.dice {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    span {
+        margin: auto 0;
+        color: #fff;
+        font-size: 18pt;
+    }
+}
