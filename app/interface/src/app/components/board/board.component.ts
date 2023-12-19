@@ -25,6 +25,8 @@ export class BoardComponent implements OnInit {
     baord.tiles$.subscribe((s) => {this.tiles = s})
     baord.street$.subscribe((s) => {this.streets = s})
     baord.buildings$.subscribe((s) => {this.buildings = s})
+    baord.board_heigth.subscribe(s => this.board_heigth = s)
+    baord.board_width.subscribe(s => this.board_width = s)
     //baord.format.next([3,4,5,4,3])
   }
   ngOnInit(): void {

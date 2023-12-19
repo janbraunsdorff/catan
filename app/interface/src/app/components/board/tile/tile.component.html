@@ -1,7 +1,7 @@
-<img [src]="tile.img_src" [style.width]="tile.w  + 'px'" [style.height]="tile.h + 'px'"
+<img [src]="!tile.edit_mode? tile.img_src: 'assets/images/sechseck-select.svg'" [style.width]="tile.w  + 'px'" [style.height]="tile.h + 'px'"
 [style.left]="tile.x + 'px'" [style.top]="tile.y + 'px'" />
 
 <div class="dice" [style.left]="(tile.x) + 'px'" [style.top]="(tile.y) + 'px'"
-[style.width]="tile.w  + 'px'" [style.height]="tile.h + 'px'">
+[style.width]="tile.w  + 'px'" [style.height]="tile.h + 'px'" (click)="activate()">
 <span>{{tile.dice}}</span>
 </div>

@@ -1,0 +1,53 @@
+<h1>Create new Game</h1>
+<mat-stepper orientation="vertical" [linear]="true" #stepper>
+<mat-step [stepControl]="boardSize">
+    <form [formGroup]="boardSize">
+        <ng-template matStepLabel>Board Size</ng-template>
+        <mat-selection-list formControlName="size" [multiple]="false">
+            <mat-list-option [value]="[3,4,5,4,3]">Normal (3-4-5-4-3)</mat-list-option>
+        </mat-selection-list>
+
+        <div>
+            <button mat-flat-button matStepperNext color="accent">Next</button>
+        </div>
+    </form>
+</mat-step>
+<mat-step [stepControl]="boardSize">
+    <form [formGroup]="boardSize">
+        <ng-template matStepLabel>Players</ng-template>
+        <mat-selection-list formControlName="players" [multiple]="false">
+            <mat-list-option [value]="2">2</mat-list-option>
+            <mat-list-option [value]="3">3</mat-list-option>
+            <mat-list-option [value]="4">4</mat-list-option>
+        </mat-selection-list>
+        <div>
+            <button mat-flat-button matStepperNext color="accent">Next</button>
+        </div>
+    </form>
+</mat-step>
+<mat-step [stepControl]="boardSize">
+    <form [formGroup]="boardSize">
+        <ng-template matStepLabel>NPC</ng-template>
+        <mat-selection-list formControlName="npc" [multiple]="false">
+            <mat-list-option [value]="0">0</mat-list-option>
+            <mat-list-option [value]="1">1</mat-list-option>
+            <mat-list-option [value]="2">2</mat-list-option>
+            <mat-list-option [value]="3">3</mat-list-option>
+            <mat-list-option [value]="4">4</mat-list-option>
+        </mat-selection-list>
+        <div>
+            <button mat-flat-button matStepperNext color="accent">Next</button>
+        </div>
+    </form>
+</mat-step>
+<mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    <p>{{boardSize.value | json}}</p>
+    <div>
+        <a mat-flat-button matStepperNext color="warn" 
+        [routerLink]="['/', 'new', 'design']" 
+        [queryParams]="{size: boardSize.get('size')?.value, players: boardSize.get('players')?.value, npc: boardSize.get('npc')?.value}"
+        >Design</a>
+    </div>
+</mat-step>
+</mat-stepper>

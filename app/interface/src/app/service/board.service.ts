@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { throws } from 'assert';
+import { BehaviorSubject, Observable, Subject, filter, last } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 
 export interface Tile {
@@ -9,6 +10,7 @@ export interface Tile {
   h: number;
   w: number,
   x_flatten: number;
+  edit_mode: boolean;
   y_flatten: number;
   img_src: string;
   dice?: number;
@@ -49,13 +51,18 @@ export interface Street {
 export class BoardService {
 
   format = new Subject<number[]>();
-  buildings$ = new Subject<Building[]>();
-  tiles$ = new Subject<Tile[]>();
-  street$ = new Subject<Street[]>();
-
+  buildings$ = new BehaviorSubject<Building[]>([]);
+  private tiles: Tile[] = []
+  tiles$ = new BehaviorSubject<Tile[]>([]);
+  street$ = new BehaviorSubject<Street[]>([]);
 
   board_heigth = new BehaviorSubject(0);
   board_width = new BehaviorSubject(0);
+
+  last_selected_tile = new BehaviorSubject<string>("");
+  
+
+  private mode: string = "play"
 
 
   img_with = 175;
@@ -63,10 +70,9 @@ export class BoardService {
   padding_x = 50;
   padding_y = 50;
 
-  scale = 0.7
+  scale = 0.5
 
   constructor() {
-    this.create()
   }
 
   create() {
@@ -76,6 +82,38 @@ export class BoardService {
       let buildings = this.create_buildings(format)
       this.create_streets(format, buildings)
     })
+  }
+
+
+  create_tiles_only() {
+    this.format.subscribe((format) => {
+      this.calcualate_size(format)
+      this.create_tiles(format)
+    })
+  }
+
+  tile_clicked(idx: string) {
+    if (this.mode == "design") {
+      this.last_selected_tile.next(idx)
+    } 
+  }
+
+
+  set_mode_design() {
+    this.mode = "design"
+  }
+
+  set_dice_value(idx: string, value: number) {
+    this.tiles.filter(e => e.idx == idx)[0].dice = value
+    this.tiles$.next(this.tiles)
+
+  }
+
+  set_terra(idx: string, value: string) {
+    this.tiles.filter(e => e.idx == idx)[0].img_src = "assets/images/" + value
+    this.tiles.filter(e => e.idx == idx)[0].edit_mode = false
+
+    this.tiles$.next(this.tiles)
   }
 
 
@@ -92,15 +130,14 @@ export class BoardService {
   }
 
   create_tiles(format: number[]) {
-    let coordinats = [];
     for (let row = 0; row < format.length; row++) {
       let row_shift = Math.max(...format) - format[row];
       for (let column = 0; column < format[row]; column++) {
-        coordinats.push(this.constrct_tile(row, row_shift, column))
+        this.tiles.push(this.constrct_tile(row, row_shift, column))
       }
     }
-    this.tiles$.next(coordinats)
-    return coordinats
+    this.tiles$.next(this.tiles)
+    return this.tiles
   }
 
 
@@ -110,7 +147,8 @@ export class BoardService {
       x: (row_shift + column * 2) / 2 * this.img_with * this.scale + this.padding_x,
       y: row * (this.img_heigt * this.scale) - (row * this.img_heigt / 3.8 * this.scale) + this.padding_y,
       img_src: "assets/images/sechseck.svg",
-      dice: 6,
+      dice: undefined,
+      edit_mode: false,
       x_flatten: column + row_shift,
       y_flatten: row,
       w: this.scale * this.img_with,
