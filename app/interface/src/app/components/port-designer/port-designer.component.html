@@ -1,0 +1,39 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Select Ports</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <mat-divider></mat-divider>
+    <div class="ports">
+      <app-port [size]="size" portType="any" (click)="add_port('any')"></app-port>
+      <app-port [size]="size" portType="grain" (click)="add_port('grain')"></app-port>
+      <app-port [size]="size" portType="wool" (click)="add_port('wool')"></app-port>
+      <app-port [size]="size" portType="ore" (click)="add_port('ore')"></app-port>
+      <app-port [size]="size" portType="lumber" (click)="add_port('lumber')"></app-port>
+      <app-port [size]="size" portType="brick" (click)="add_port('brick')"></app-port>
+    </div>
+  </mat-card-content>
+</mat-card>
+<br>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Ports</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <mat-divider></mat-divider>
+      <div class="port-list">
+
+        @for(s of ports; track $index){
+          <div class="port-entry" (click)="select(s.street_idx)">
+            <span>{{s.type}}</span>
+            <div class="actions">
+              <button mat-raised-button color="accent" (click)="this.portService.flip_port(s.street_idx, s.type)">Flip</button>
+              <button mat-raised-button color="warn"  (click)="this.portService.delete_port(s.street_idx)">Deleta</button>
+            </div>
+          </div>
+        }
+      </div>
+  </mat-card-content>
+</mat-card>

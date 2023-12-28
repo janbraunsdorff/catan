@@ -1,0 +1,35 @@
+.ports {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.port-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+
+    .port-entry {
+        display: flex;
+        flex-direction: row;
+        cursor: pointer;
+        padding: 10px;
+
+        span {
+            margin: auto 0;
+        }
+
+        &:hover {
+            background-color: #626262;
+        }
+
+        .actions {
+            margin-left: auto;
+            display: flex;
+            flex-direction: row;
+            gap: 20px;               
+            
+        }
+    }
+}

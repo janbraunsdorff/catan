@@ -1,14 +1,33 @@
 <div class="tiles" [style.height]="board_heigth +'px'" [style.width]="board_width + 'px'">
-    @for (img of tiles; track $index) {
-        <app-tile [tile]="img"></app-tile>
+
+    @if (baord.show_tiles) {
+        @for (img of tiles; track $index) {
+            <app-tile [tile]="img"></app-tile>
+        }
     }
 
-    @for (b of buildings; track $index) {
-        <app-building [building]="b"></app-building>
+    @if(baord.show_buildings) {
+        @for (b of buildings; track $index) {
+            <app-building [building]="b"></app-building>
+        }
     }
 
-    @for (s of streets; track $index) {
-        <app-street [s]="s"></app-street>
+    @if(baord.show_streets) {
+        @for (s of streets; track $index) {
+            <app-street [s]="s"></app-street>
+        }
+    }
+
+    @if(baord.show_ports) {
+        @for (s of ports; track $index) {
+            <app-port 
+                [portType]="s.type" 
+                [size]="50 * config.scale"
+                [style.left]="s.x + 'px'" 
+                [style.top]="s.y + 'px'"
+            >
+            </app-port>
+        }
     }
 
 </div>

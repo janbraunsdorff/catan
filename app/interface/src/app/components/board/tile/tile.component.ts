@@ -1,5 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { BoardService, Tile } from '../../../service/board.service';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Tile } from '../../../service/tile.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BoardService } from '../../../service/board.service';
+
 
 @Component({
   selector: 'app-tile',
@@ -9,7 +12,9 @@ import { BoardService, Tile } from '../../../service/board.service';
   styleUrl: './tile.component.scss'
 })
 export class TileComponent implements OnInit {
-  constructor(public baord: BoardService) { }
+  constructor(public baord: BoardService, private _route: ActivatedRoute,
+    private _router: Router) { }
+
 
   @Input() tile: Tile = {
     idx: "---",
@@ -25,18 +30,20 @@ export class TileComponent implements OnInit {
 
   
   ngOnInit(): void {
-    this.baord.last_selected_tile.subscribe((e: string) => {
-      if (this.tile.idx == e) {
-        this.tile.edit_mode = true
-      }else {
-        this.tile.edit_mode = false
-      }
-
+    this._route.queryParams.subscribe((q) => {
+      this.tile.edit_mode = q['tile'] == this.tile.idx
     })
   }
 
   activate() {
-    this.baord.tile_clicked(this.tile.idx)
+    this._router.navigate([], {
+      relativeTo: this._route,
+      queryParams: {
+        tile: this.tile.idx
+      },
+      queryParamsHandling: 'merge',
+      skipLocationChange: false
+    });
   }
 
 }

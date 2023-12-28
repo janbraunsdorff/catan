@@ -1,0 +1,23 @@
+.wrapper {
+    position: relative;
+
+    background-color: #313131;
+    border-radius: 10px;
+
+    img {
+        position: absolute;
+        height: 100%;
+    }
+
+    mat-icon {
+        position: absolute;
+        transform-origin: center;
+        top: 100%; 
+        right: 100%;
+        transform: translate(100%, -100%);
+        z-index: 10;
+        color: #fff;
+        width: unset;
+        height: unset;
+    }
+}

@@ -1,5 +1,7 @@
-import { Component, Input } from '@angular/core';
-import { Street } from '../../../service/board.service';
+import { AfterViewChecked, AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { BoardService } from '../../../service/board.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Street } from '../../../service/street.service';
 
 @Component({
   selector: 'app-street',
@@ -8,19 +10,40 @@ import { Street } from '../../../service/board.service';
   templateUrl: './street.component.html',
   styleUrl: './street.component.scss'
 })
-export class StreetComponent {
-  @Input() s: Street ={
+export class StreetComponent implements OnInit {
+
+  @Input() s: Street = {
     idx: '',
-    b1_x_flatten: 0,
-    b1_y_flatten: 0,
-    b2_x_flatten: 0,
-    b2_y_flatten: 0,
+    buildings: [],
     x: 0,
     y: 0,
     rotation: 0,
     length: 0,
     heigth: 0,
-    color: ''
+    color: '',
+    edit_mode: false
+  }
+
+  constructor(public baord: BoardService, private _route: ActivatedRoute,
+    private _router: Router) { }
+
+
+  ngOnInit(): void {
+    this._route.queryParams.subscribe((q) => {
+      this.s.edit_mode = q['street'] == this.s.idx
+    })
+  }
+
+
+  activate() {
+    this._router.navigate([], {
+      relativeTo: this._route,
+      queryParams: {
+        street: this.s.idx
+      },
+      queryParamsHandling: 'merge',
+      skipLocationChange: false
+    });
   }
 
 }

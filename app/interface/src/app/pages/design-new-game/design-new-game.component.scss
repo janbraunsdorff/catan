@@ -3,9 +3,9 @@
     flex: row;
     grid-auto-rows: 1fr;
 
-
-    app-board-desginer {
-        margin: 50px 0;
+    mat-tab-group,
+    app-board-desginer  {
+        margin: 50px 0 0 0;
         width: 100%;
     }
 }

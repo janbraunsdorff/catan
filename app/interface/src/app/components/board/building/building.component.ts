@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Building } from '../../../service/board.service';
 import {MatIconModule} from '@angular/material/icon';
+import { Building } from '../../../service/building.service';
 
 
 @Component({
