@@ -1,4 +1,6 @@
-use serde::{Serialize, Deserialize};
+use std::{io::BufReader};
+
+use serde::{Serialize, Deserialize, de::DeserializeOwned};
 use crate::game::Game;
 
 
@@ -13,27 +15,18 @@ pub trait Event {
     fn undo(&self) -> Result<(), UndoError>;
 }
 
+pub fn from_str<'a, T>(data: &str) -> Result<Box<dyn Event + 'a>, ExecuteError> 
+where T: DeserializeOwned+Event+'a {
+    let buf_reader = BufReader::new(data.as_bytes());
+    let x: Result<T, serde_json::Error> = serde_json::from_reader(buf_reader);
 
-pub struct EventBox{
-    pub event: Box<dyn Event>
-}
-
-
-
-impl EventBox{
-    pub fn from_str<'a, X: Event+Deserialize<'a>+ 'static>(data: &'a str) -> Result<EventBox, ExecuteError> {
-        let x: Result<X, serde_json::Error> = serde_json::from_str(data);
-        match x {
-            Ok(val) => Ok(EventBox{event: Box::new(val)}),
-            Err(err) => Err(ExecuteError{ message: err.to_string(), step: "parse from string".to_string() }),
-        }
+    match x {
+        Ok(val) => Ok(Box::new(val)),
+        Err(err) => Err(ExecuteError{ message: err.to_string(), step: "parse from string".to_string() }),
     }
 }
-    
-impl EventBox {
-    pub fn from_trait(t: impl Event+ 'static) -> EventBox{
-        EventBox {
-            event: Box::new(t)
-        }
-    }
+
+pub fn from_trait<T: Event>(t: T) -> Box<T>{
+    Box::new(t)
 }
+

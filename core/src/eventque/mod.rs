@@ -3,12 +3,13 @@ use std::{fs::OpenOptions, io::{BufReader, BufRead, Write}};
 
 use serde::Serialize;
 
-use self::{event::{EventBox, ExecuteError}, start::{CreateGameEvent, FillBoardEvent}};
+use self::{event::{ExecuteError, Event}, start::{CreateGameEvent, FillBoardEvent}};
+use self::event as ev;
 
 pub mod start;
 pub mod event;
 
-pub fn load_events(path: &String) -> Result<Vec<EventBox>, ExecuteError>{
+pub fn load_events(path: &String) -> Result<Vec<Box<dyn Event>>, ExecuteError>{
     let res_file_open = OpenOptions::new().read(true).open(&path);
 
     let file = match  res_file_open {
@@ -35,19 +36,31 @@ pub fn load_events(path: &String) -> Result<Vec<EventBox>, ExecuteError>{
 
 }
 
-fn parse_line(line: &str) -> Result<EventBox, ExecuteError>{
+fn parse_line(line: &str) -> Result<Box<dyn Event>, ExecuteError>{
     let parts: Vec<&str> = line.split(":").collect();
     let event_type = parts[0];
+
     let data = parts[1..].join("");
+
 
 
 
     let mut event_missing_error = "could not find event ".to_string();
     event_missing_error.push_str(event_type);
 
-    let x = match event_type {
-        "CreateGame" =>EventBox::from_str::<CreateGameEvent>(data.as_str()),
-        "FillBoard" =>EventBox::from_str::<FillBoardEvent>(data.as_str()),
+    let mut v: Vec<Box<dyn Event>> = Vec::new();
+
+    let d1  = match  ev::from_str::<CreateGameEvent>(data.as_str()){
+        Ok(val) => val,
+        Err(err) => todo!(),
+    };
+
+    v.push(d1);
+
+
+    let x: Result<Box<dyn Event>, ExecuteError> = match event_type {
+        "CreateGame" => ev::from_str::<CreateGameEvent>(data.as_str()),
+        "FillBoard" => ev::from_str::<FillBoardEvent>(data.as_str()), 
         _ => return Err(ExecuteError{step: "parse line".to_string(), message: event_missing_error})
     };
 
