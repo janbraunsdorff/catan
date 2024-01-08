@@ -1,4 +1,4 @@
-use crate::board::building::Building;
+use crate::_board::building::Building;
 use std::rc::Rc;
 
 #[derive(Debug)]
@@ -81,7 +81,7 @@ pub fn create_streets(dims: &Vec<u8>, buildings: &Vec<Rc<Building>>) -> Vec<Stre
 
 #[cfg(test)]
 mod tests {
-    use crate::board::building::create_buildings;
+    use crate::_board::building::create_buildings;
 
     use super::*;
     #[test]

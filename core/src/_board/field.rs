@@ -1,6 +1,6 @@
-use crate::board::building::Building;
-use crate::board::street::Street;
-use crate::board::tiles::Tile;
+use crate::_board::building::Building;
+use crate::_board::street::Street;
+use crate::_board::tiles::Tile;
 use std::rc::Rc;
 
 #[derive(Debug)]

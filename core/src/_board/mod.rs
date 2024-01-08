@@ -1,16 +1,38 @@
-use crate::board::tiles::{create_tiles, TileType};
-use crate::board::building::create_buildings;
-use crate::board::street::create_streets;
-use crate::board::field::Board;
+use serde::{Deserialize, Serialize};
+
+use crate::_board::tiles::{create_tiles, TileType};
+use crate::_board::building::create_buildings;
+use crate::_board::street::create_streets;
+use crate::_board::field::Board;
 
 
-mod field;
-mod tiles;
-mod street;
-mod building;
+pub mod field;
+pub mod tiles;
+pub mod street;
+pub mod building;
 
 
-struct BoardBuilder{
+#[derive(Serialize, Deserialize, Clone)]
+pub enum Color{
+    RED,
+    BLUE,
+    ORANGE,
+    WHITHE,
+    DEFAULT,
+}
+
+#[derive(Serialize, Deserialize)]
+pub enum PortType{
+    ANY,
+    WOOL,
+    LUMBER,
+    GRAIN,
+    ORE,
+    BRICKS,
+}
+
+
+pub struct BoardBuilder{
     dims: Vec<u8>,
     current_dim: usize,
     dice_values: Vec<u8>,
@@ -20,30 +42,30 @@ struct BoardBuilder{
 }
 
 impl BoardBuilder {
-    fn from_scratch() -> BoardBuilder{
+    pub fn from_scratch() -> BoardBuilder{
         BoardBuilder { dims: vec![0], current_dim: 0, dice_values: Vec::new(), kinds: Vec::new(), robber_x: 0, robber_y: 0 }
     }
 
-    fn with_new_line(mut self) -> BoardBuilder {
+    pub fn with_new_line(mut self) -> BoardBuilder {
         self.current_dim += 1;
         self.dims.push(0);
         self
     }
 
-    fn with_tile(mut self, dice_value: u8, kind: TileType) -> BoardBuilder {
+    pub fn with_tile(mut self, dice_value: u8, kind: TileType) -> BoardBuilder {
         self.dims[self.current_dim] += 1;
         self.dice_values.push(dice_value);
         self.kinds.push(kind);
         self
     }
 
-    fn with_roober(mut self, x: u8, y: u8) -> BoardBuilder{
+    pub fn with_roober(mut self, x: u8, y: u8) -> BoardBuilder{
         self.robber_x = x;
         self.robber_y = y;
         self
     }
 
-    fn build(&self) -> Board {
+    pub fn build(&self) -> Board {
         let buildings = create_buildings(&self.dims);
         let tiles = create_tiles(&self.dims, &buildings, &self.dice_values, &self.kinds, &self.robber_x, &self.robber_y);
         let streets = create_streets(&self.dims, &buildings);

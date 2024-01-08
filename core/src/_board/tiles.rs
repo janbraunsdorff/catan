@@ -1,14 +1,17 @@
 use std::rc::Rc;
-use crate::board::building::Building;
+use serde::{Serialize, Deserialize};
 
-#[derive(Debug, Clone, Copy)]
+use crate::_board::building::Building;
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub enum TileType {
     Hills,
     Forest,
     Mountains,
     Fields,
     Pasture,
-    Dessert
+    Dessert,
+    Water,
 }
 
 
@@ -72,7 +75,7 @@ pub fn create_tiles(dims: &Vec<u8>, buildings: &Vec<Rc<Building>>,  dice_values:
 
 #[cfg(test)]
 mod tests {
-    use crate::board::building::create_buildings;
+    use crate::_board::building::create_buildings;
 
     use super::*;
 
