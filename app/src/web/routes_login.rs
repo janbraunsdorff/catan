@@ -1,22 +1,23 @@
-use axum::{Json, Router, routing::post};
+use crate::{web, Error, Result};
+use axum::{routing::post, Json, Router};
 use serde::Deserialize;
-use serde_json::{Value, json};
-use tower_cookies::{Cookies, Cookie};
-use crate::{Error, Result, web};
+use serde_json::{json, Value};
+use tower_cookies::{Cookie, Cookies};
 
-
-pub fn routes () -> Router {
+pub fn routes() -> Router {
     Router::new().route("/api/login", post(api_login))
 }
 
-async fn api_login(cookies: Cookies, payload: Json<LoginPayload>) -> Result<Json<Value>>{
+async fn api_login(cookies: Cookies, payload: Json<LoginPayload>) -> Result<Json<Value>> {
     println!("--> {:<12} - api_login", "HANDLER");
 
     if payload.username != "jan" || payload.pwd != "test" {
-        return  Err(Error::LogingFail);
+        return Err(Error::LogingFail);
     }
 
-    let c = Cookie::build((web::AUTH_TOKEN, "user-1.exp.sign")).http_only(true).build();
+    let c = Cookie::build((web::AUTH_TOKEN, "user-1.exp.sign"))
+        .http_only(true)
+        .build();
 
     cookies.add(c);
 
@@ -26,16 +27,11 @@ async fn api_login(cookies: Cookies, payload: Json<LoginPayload>) -> Result<Json
         }
     }));
 
-
-
-    
-
     Ok(body)
 }
 
-
 #[derive(Deserialize, Debug)]
-struct LoginPayload{
+struct LoginPayload {
     username: String,
-    pwd: String
+    pwd: String,
 }

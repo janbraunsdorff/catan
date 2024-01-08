@@ -19,5 +19,4 @@ impl Board {
             streets: streets,
         }
     }
-
 }

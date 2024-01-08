@@ -11,32 +11,35 @@ async fn quick_dev() -> Result<()> {
     //hc.do_get("/app/src/main.rs").await?.print().await?;
 
     hc.do_post(
-        "/api/login", 
+        "/api/login",
         json!({
             "username": "jan",
             "pwd": "test1"
-        })
-    ).await?.print().await?;
+        }),
+    )
+    .await?
+    .print()
+    .await?;
 
     hc.do_post(
-        "/api/login", 
+        "/api/login",
         json!({
             "username": "jan",
             "pwd": "test"
-        })
-    ).await?.print().await?;
+        }),
+    )
+    .await?
+    .print()
+    .await?;
 
-
-    hc.do_post(
-        "/api/tickets",
-         json!({"title": "Hello World"})
-    ).await?.print().await?;
-
+    hc.do_post("/api/tickets", json!({"title": "Hello World"}))
+        .await?
+        .print()
+        .await?;
 
     hc.do_get("/api/tickets").await?.print().await?;
 
     hc.do_delete("/api/tickets/0").await?.print().await?;
-
 
     Ok(())
 }

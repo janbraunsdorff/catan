@@ -1,15 +1,13 @@
-use axum::{response::IntoResponse, http::StatusCode};
+use axum::{http::StatusCode, response::IntoResponse};
 
 pub type Result<T> = core::result::Result<T, Error>;
-
 
 #[derive(Debug)]
 pub enum Error {
     LogingFail,
 
-    TicketDeleteFaildNotFound{id: u64}
+    TicketDeleteFaildNotFound { id: u64 },
 }
-
 
 impl IntoResponse for Error {
     fn into_response(self) -> axum::response::Response {

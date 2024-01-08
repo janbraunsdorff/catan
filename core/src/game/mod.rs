@@ -1,7 +1,6 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 use crate::_board::{field::Board, Color};
-
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct Player {
@@ -13,11 +12,15 @@ pub struct Player {
 pub struct Game {
     board: Option<Board>,
     players: Vec<Player>,
-    extenstions: Vec<String>
+    extenstions: Vec<String>,
 }
 
 impl Game {
     pub fn new() -> Game {
-        Game{ board: None, players: Vec::new(), extenstions: Vec:: new() }
+        Game {
+            board: None,
+            players: Vec::new(),
+            extenstions: Vec::new(),
+        }
     }
 }

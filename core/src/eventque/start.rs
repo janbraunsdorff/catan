@@ -1,18 +1,15 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
-use crate::game::{Player, Game};
+use crate::game::{Game, Player};
 
 use super::event::{Event, ExecuteError, UndoError};
 
-
-
 #[derive(Serialize, Deserialize)]
-pub struct CreateGameEvent{
+pub struct CreateGameEvent {
     pub npc: Vec<Player>,
     pub player: Vec<Player>,
-    pub extenstions: Vec<String>
+    pub extenstions: Vec<String>,
 }
-
 
 impl Event for CreateGameEvent {
     fn execute(&self, game: Game) -> Result<Game, ExecuteError> {
@@ -25,8 +22,7 @@ impl Event for CreateGameEvent {
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct FillBoardEvent{
-}
+pub struct FillBoardEvent {}
 
 impl Event for FillBoardEvent {
     fn execute(&self, game: Game) -> Result<Game, ExecuteError> {
