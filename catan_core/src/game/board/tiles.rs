@@ -6,12 +6,12 @@ use crate::game::{board::building::Building, TileType};
 #[derive(Debug)]
 pub struct Tile {
     idx: i32,
-    corr_x: u8,
-    corr_y: u8,
-    buildings: Vec<Rc<Building>>,
-    dice: u8,
-    kind: TileType,
-    has_robber: bool,
+    pub corr_x: u8,
+    pub corr_y: u8,
+    pub buildings: Vec<Rc<Building>>,
+    pub dice: u8,
+    pub kind: TileType,
+    pub has_robber: bool,
 }
 
 pub fn create_tiles(

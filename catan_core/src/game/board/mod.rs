@@ -5,6 +5,7 @@ use self::{building::Building, street::Street, tiles::Tile};
 pub mod building;
 pub mod street;
 pub mod tiles;
+pub mod ports;
 
 #[derive(Debug)]
 pub struct Board {

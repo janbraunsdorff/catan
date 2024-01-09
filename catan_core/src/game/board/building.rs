@@ -1,5 +1,7 @@
-use crate::{eventque::event::ExecuteError, game::BuildingType};
+use crate::{eventque::event::ExecuteError, game::{BuildingType, Color}};
 use std::rc::Rc;
+
+use super::ports::Port;
 
 #[derive(Debug)]
 pub struct Building {
@@ -7,9 +9,11 @@ pub struct Building {
     pub corr_x: u8,
     pub corr_y: u8,
     pub building_type: BuildingType,
+    pub color: Color,
+    pub port: Option<Rc<Port>>
 }
 
-pub fn create_buildings(dims: &Vec<u8>) -> Vec<Rc<Building>> {
+pub fn create_buildings(dims: &Vec<u8>, port: &Vec<Rc<Port>>) -> Vec<Rc<Building>> {
     let max_columns = dims.iter().max().unwrap();
     let first_half = dims.iter().position(|x| x == max_columns).unwrap();
 
@@ -26,11 +30,18 @@ pub fn create_buildings(dims: &Vec<u8>) -> Vec<Rc<Building>> {
         let row_shift = max_columns - updatad_dims[row];
 
         for i in 0..(updatad_dims[row] * 2) + 1 {
+            let idx = (row * 100) as i32 + (row_shift + i) as i32;
+            let port: Option<Rc<Port>> =  match port.into_iter().filter(|x| x.building_idx == idx).next() {
+                Some(val) => Some(Rc::clone(val)),
+                None => None,
+            };
             let b = Building {
-                idx: (row * 100) as i32 + (row_shift + i) as i32,
+                port: port,
+                idx: idx,
                 corr_y: row as u8,
                 corr_x: row_shift + i,
                 building_type: BuildingType::EMPTY,
+                color: Color::DEFAULT
             };
             buildings.push(Rc::new(b));
         }

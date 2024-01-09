@@ -1,11 +1,12 @@
-use crate::game::board::building::Building;
+use crate::game::{board::building::Building, Color};
 use std::rc::Rc;
 
 #[derive(Debug)]
 pub struct Street {
     pub idx: u8,
-    c1: Rc<Building>,
-    c2: Rc<Building>,
+    pub color: Color,
+    pub c1: Rc<Building>,
+    pub c2: Rc<Building>,
 }
 
 pub fn create_streets(dims: &Vec<u8>, buildings: &Vec<Rc<Building>>) -> Vec<Street> {
@@ -28,6 +29,7 @@ pub fn create_streets(dims: &Vec<u8>, buildings: &Vec<Rc<Building>>) -> Vec<Stre
         for i in 0..(updatad_dims[row] * 2) {
             let s = Street {
                 idx: idx_counter,
+                color: Color::DEFAULT,
                 c1: Rc::clone(
                     &buildings
                         .iter()
@@ -57,6 +59,7 @@ pub fn create_streets(dims: &Vec<u8>, buildings: &Vec<Rc<Building>>) -> Vec<Stre
 
             let s = Street {
                 idx: idx_counter,
+                color: Color::DEFAULT,
                 c1: Rc::clone(
                     &buildings
                         .iter()

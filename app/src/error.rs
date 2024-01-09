@@ -1,17 +1,14 @@
-use axum::{http::StatusCode, response::IntoResponse};
+use axum::{response::{Response, IntoResponse}, http::StatusCode, Json};
+use serde::Serialize;
 
-pub type Result<T> = core::result::Result<T, Error>;
-
-#[derive(Debug)]
-pub enum Error {
-    LogingFail,
-
-    TicketDeleteFaildNotFound { id: u64 },
+#[derive(Serialize)]
+pub struct ExternalExecutionError{
+    pub step: String,
+    pub message: String
 }
 
-impl IntoResponse for Error {
-    fn into_response(self) -> axum::response::Response {
-        println!("--> {:<12} - {self:?}", "INTO_RES");
-        (StatusCode::INTERNAL_SERVER_ERROR, "Unhandeled_client_error").into_response()
+impl IntoResponse for ExternalExecutionError {
+    fn into_response(self) -> Response {
+        (StatusCode::INTERNAL_SERVER_ERROR, Json(&self)).into_response()
     }
 }

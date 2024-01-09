@@ -24,7 +24,7 @@ pub enum TileType {
     Water,
 }
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Copy, Debug, PartialEq)]
 pub enum PortType {
     ANY,
     WOOL,
