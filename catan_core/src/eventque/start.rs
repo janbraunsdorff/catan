@@ -72,11 +72,21 @@ pub struct FillBoardEvent {
 
 impl Event for FillBoardEvent {
     fn execute(&self, mut game: Game) -> Result<Game, ExecuteError> {
-        let ports: Vec<Rc<Port>> = self.ports.iter()
-            .map(|x| vec![
-                Port{port_type: x.port_type.clone(), building_idx: x.buildings[0]},
-                Port{port_type: x.port_type.clone(), building_idx: x.buildings[1]},
-            ])
+        let ports: Vec<Rc<Port>> = self
+            .ports
+            .iter()
+            .map(|x| {
+                vec![
+                    Port {
+                        port_type: x.port_type.clone(),
+                        building_idx: x.buildings[0],
+                    },
+                    Port {
+                        port_type: x.port_type.clone(),
+                        building_idx: x.buildings[1],
+                    },
+                ]
+            })
             .flatten()
             .map(|x| Rc::new(x))
             .collect();

@@ -1,10 +1,14 @@
-use axum::{response::{Response, IntoResponse}, http::StatusCode, Json};
+use axum::{
+    http::StatusCode,
+    response::{IntoResponse, Response},
+    Json,
+};
 use serde::Serialize;
 
 #[derive(Serialize)]
-pub struct ExternalExecutionError{
+pub struct ExternalExecutionError {
     pub step: String,
-    pub message: String
+    pub message: String,
 }
 
 impl IntoResponse for ExternalExecutionError {

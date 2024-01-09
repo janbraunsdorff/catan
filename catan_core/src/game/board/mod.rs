@@ -3,9 +3,9 @@ use std::rc::Rc;
 use self::{building::Building, street::Street, tiles::Tile};
 
 pub mod building;
+pub mod ports;
 pub mod street;
 pub mod tiles;
-pub mod ports;
 
 #[derive(Debug)]
 pub struct Board {

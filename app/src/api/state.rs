@@ -1,25 +1,27 @@
-use axum::{extract::Path, response::IntoResponse, http::StatusCode, Json};
-
+use axum::{extract::Path, http::StatusCode, response::IntoResponse, Json};
 
 use crate::error::ExternalExecutionError;
 
 use super::model::game::StateResponse;
 
-
-pub async fn state(Path(id): Path<String>)  ->  Result<impl IntoResponse, ExternalExecutionError> {
-    let res  = catan_core::load(id.as_str(), -1);
+pub async fn state(Path(id): Path<String>) -> Result<impl IntoResponse, ExternalExecutionError> {
+    let res = catan_core::load(id.as_str(), -1);
     let game = match res {
         Ok(val) => val,
-        Err(err) => return Err(ExternalExecutionError{ step: err.step, message: err.message })
+        Err(err) => {
+            return Err(ExternalExecutionError {
+                step: err.step,
+                message: err.message,
+            })
+        }
     };
     Ok((StatusCode::OK, Json(StateResponse::from(game))))
 }
 
-
 #[cfg(test)]
 mod test {
     use crate::api::{self, model::game::StateResponse};
-    use anyhow::{Result, Ok};
+    use anyhow::{Ok, Result};
     use http_body_util::BodyExt; // for `collect`
 
     use axum::{
@@ -33,11 +35,10 @@ mod test {
         let path = "/game/002_fill_board_2/state";
         let app = api::create_main_rounter();
 
-
-        let response = app.oneshot(
-            Request::builder().uri(path).body(Body::empty()).unwrap()
-        ).await
-        .unwrap();
+        let response = app
+            .oneshot(Request::builder().uri(path).body(Body::empty()).unwrap())
+            .await
+            .unwrap();
 
         assert_eq!(StatusCode::OK, response.status());
 

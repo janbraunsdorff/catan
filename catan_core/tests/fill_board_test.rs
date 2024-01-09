@@ -147,7 +147,16 @@ fn test_fill_board() {
     assert_eq!(b.tiles.len(), 4);
     assert_eq!(b.buildings.len(), 16);
 
-    assert_eq!(b.buildings.iter().filter(|x| x.idx == 101).next().unwrap().port.is_none(), false);
+    assert_eq!(
+        b.buildings
+            .iter()
+            .filter(|x| x.idx == 101)
+            .next()
+            .unwrap()
+            .port
+            .is_none(),
+        false
+    );
     let port = b.buildings.iter().filter(|x| x.idx == 101).next().unwrap();
     let x = match &port.as_ref().port {
         Some(val) => (*val).port_type,
@@ -161,7 +170,6 @@ fn test_fill_board() {
         None => panic!(""),
     };
     assert_eq!(x, PortType::ANY);
-
 }
 
 #[test]
