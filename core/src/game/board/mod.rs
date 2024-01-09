@@ -1,7 +1,12 @@
-use crate::_board::building::Building;
-use crate::_board::street::Street;
-use crate::_board::tiles::Tile;
 use std::rc::Rc;
+
+use self::{building::Building, tiles::Tile, street::Street};
+
+
+
+pub mod tiles;
+pub mod street;
+pub mod building;
 
 #[derive(Debug)]
 pub struct Board {

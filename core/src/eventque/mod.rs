@@ -71,7 +71,7 @@ fn parse_line(line: &str) -> Result<Box<dyn Event>, ExecuteError> {
 
     let x: Result<Box<dyn Event>, ExecuteError> = match event_type {
         "CreateGameEvent" => ev::from_str::<CreateGameEvent>(data.as_str()),
-        "FillBoard" => ev::from_str::<FillBoardEvent>(data.as_str()),
+        "FillBoardEvent" => ev::from_str::<FillBoardEvent>(data.as_str()),
         _ => {
             return Err(ExecuteError {
                 step: "parse line".to_string(),

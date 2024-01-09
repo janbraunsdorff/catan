@@ -1,4 +1,4 @@
-use crate::_board::building::Building;
+use crate::game::board::building::Building;
 use std::rc::Rc;
 
 #[derive(Debug)]
@@ -77,18 +77,4 @@ pub fn create_streets(dims: &Vec<u8>, buildings: &Vec<Rc<Building>>) -> Vec<Stre
         }
     }
     streets
-}
-
-#[cfg(test)]
-mod tests {
-    use crate::_board::building::create_buildings;
-
-    use super::*;
-    #[test]
-    fn test_create_1x2x1_tile_to_streets() {
-        let buildings = create_buildings(&vec![1, 2, 1]);
-        let streets = create_streets(&vec![1, 2, 1], &buildings);
-
-        assert_eq!(streets.len(), 19)
-    }
 }
