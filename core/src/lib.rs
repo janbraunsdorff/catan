@@ -9,9 +9,10 @@ pub mod eventque;
 pub mod game;
 
 fn get_storage(game_idx: &str) -> String {
-    let base_path = env::var("event_store").unwrap_or("/home/jan/projects/rust-catan/.storage".to_string());
-    let path = vec![base_path.as_str(),"/",game_idx,".jsonl",].join("");
-    return path
+    let base_path =
+        env::var("event_store").unwrap_or("/home/jan/projects/rust-catan/.storage".to_string());
+    let path = vec![base_path.as_str(), "/", game_idx, ".jsonl"].join("");
+    return path;
 }
 
 fn execute<'a>(
@@ -21,7 +22,7 @@ fn execute<'a>(
 ) -> Result<Game, ExecuteError> {
     let path = get_storage(&game_idx);
 
-    let updated_game =  match new_event.execute(game) {
+    let updated_game = match new_event.execute(game) {
         Ok(val) => val,
         Err(err) => return Err(err),
     };
@@ -38,7 +39,10 @@ fn execute<'a>(
     Ok(updated_game)
 }
 
-fn store<'a>(path: String, new_event: impl Event + Deserialize<'a> + Serialize + Clone) -> Result<(), ExecuteError>{
+fn store<'a>(
+    path: String,
+    new_event: impl Event + Deserialize<'a> + Serialize + Clone,
+) -> Result<(), ExecuteError> {
     let x = eq::store_event(path, new_event.clone());
     match x {
         Ok(_) => Ok(()),
@@ -76,7 +80,6 @@ pub fn load<'a>(game_idx: &str, limit: i32) -> Result<Game, ExecuteError> {
     }
 
     Ok(game)
-
 }
 
 pub fn load_and_execute<'a>(

@@ -1,13 +1,21 @@
 use core::eventque::start::CreateGameEvent;
-use core::{load_and_execute, load};
-use core::game::{Player, Color};
+use core::game::{Color, Player};
+use core::{load, load_and_execute};
 use std::fs;
 
 #[test]
 fn test_create_game_from_event() {
     let event = CreateGameEvent {
-        npc: vec![Player{ color: Color::RED, name: "npc1".to_string(), npc: true }],
-        player: vec![Player{ color: Color::BLUE, name: "pc1".to_string(), npc: false }],
+        npc: vec![Player {
+            color: Color::RED,
+            name: "npc1".to_string(),
+            npc: true,
+        }],
+        player: vec![Player {
+            color: Color::BLUE,
+            name: "pc1".to_string(),
+            npc: false,
+        }],
         extenstions: vec![],
     };
     let ex_result = load_and_execute("new_game", event, -1);
@@ -22,7 +30,6 @@ fn test_create_game_from_event() {
     assert_eq!(res.players[0].color, Color::BLUE);
     assert_eq!(res.players[1].color, Color::RED);
 }
-
 
 #[test]
 fn test_create_game_from_source() {

@@ -1,11 +1,11 @@
 use serde::{Deserialize, Serialize};
 
-use crate::game::board::street::create_streets;
-use crate::game::board::Board;
-use crate::game::board::tiles::{create_tiles, verify_tiles};
-use crate::game::{Game, Player, TileType, PortType, BuildingType};
-use crate::game::board::building::{create_buildings, verify_buldings};
 use super::event::{Event, ExecuteError, UndoError};
+use crate::game::board::building::{create_buildings, verify_buldings};
+use crate::game::board::street::create_streets;
+use crate::game::board::tiles::{create_tiles, verify_tiles};
+use crate::game::board::Board;
+use crate::game::{BuildingType, Game, Player, PortType, TileType};
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct CreateGameEvent {
@@ -40,22 +40,22 @@ pub struct TileEvent {
     pub dice: u8,
 }
 #[derive(Serialize, Deserialize, Clone)]
-pub struct PortEvent{
+pub struct PortEvent {
     pub port_type: PortType,
-    pub buildings: [i32; 2] 
+    pub buildings: [i32; 2],
 }
 
 #[derive(Serialize, Deserialize, Clone)]
-pub struct BuildingEvent{
+pub struct BuildingEvent {
     pub building_type: BuildingType,
     pub x: i32,
-    pub y: i32
+    pub y: i32,
 }
 
 #[derive(Serialize, Deserialize, Clone)]
-pub struct Robber{
+pub struct Robber {
     pub x: i32,
-    pub y: i32
+    pub y: i32,
 }
 
 #[derive(Serialize, Deserialize, Clone)]
@@ -64,8 +64,7 @@ pub struct FillBoardEvent {
     pub format: Vec<u8>,
     pub ports: Vec<PortEvent>,
     pub bulding: Vec<BuildingEvent>,
-    pub robber: Robber
-
+    pub robber: Robber,
 }
 
 impl Event for FillBoardEvent {
@@ -84,9 +83,9 @@ impl Event for FillBoardEvent {
             &self.format,
             &buildings,
             &self.tiles.iter().map(|x| x.dice).collect(),
-            &self.tiles.iter().map(|x|x.tile_type).collect(),
+            &self.tiles.iter().map(|x| x.tile_type).collect(),
             self.robber.x,
-            self.robber.y
+            self.robber.y,
         );
         let target_tile_corr = self.tiles.iter().map(|x| (x.x, x.y)).collect();
         let res_create_tiles = verify_tiles(&tiles, target_tile_corr);
@@ -100,9 +99,9 @@ impl Event for FillBoardEvent {
 
         // create Ports
         // TODO:
-        
+
         game.board = Some(Board::new(tiles, buildings, streets));
-        Ok(game) 
+        Ok(game)
     }
 
     fn undo(&self) -> Result<(), UndoError> {
