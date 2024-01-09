@@ -1,6 +1,4 @@
-use std::borrow::Borrow;
 use std::{env, cmp};
-use std::i64::MIN;
 
 use eventque as eq;
 use eventque::event::{Event, ExecuteError, UndoError};
@@ -8,18 +6,19 @@ use game::Game;
 use serde::{Deserialize, Serialize};
 
 mod _board;
-mod eventque;
+pub mod eventque;
 mod game;
+
 
 fn get_storage() -> String {
     env::var("event_store").unwrap_or("/home/jan/projects/rust-catan/.storage".to_string())
 }
 
-fn execute<'a>(
+pub fn execute<'a>(
     game_idx: String,
-    new_event: impl Event + Deserialize<'a> + Serialize+ Clone,
+    new_event: impl Event + Deserialize<'a> + Serialize + Clone,
     limit: i32
-) -> Result<(), ExecuteError> {
+) -> Result<Game, ExecuteError> {
     // load eventstore
     let path = vec![
         get_storage(),
@@ -54,12 +53,16 @@ fn execute<'a>(
     }
 
     // store last
-    eq::store_event(path, &new_event);
+    let x = eq::store_event(path, new_event.clone());
+    match x {
+        Ok(_) => (),
+        Err(err) => return Err(err),
+    }
 
     // return Error
-    Ok(())
+    Ok(game)
 }
 
-fn undo() -> Result<(), UndoError> {
+pub fn undo() -> Result<(), UndoError> {
     Ok(())
 }

@@ -4,7 +4,7 @@ use crate::game::{Game, Player};
 
 use super::event::{Event, ExecuteError, UndoError};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct CreateGameEvent {
     pub npc: Vec<Player>,
     pub player: Vec<Player>,
@@ -13,11 +13,15 @@ pub struct CreateGameEvent {
 
 impl Event for CreateGameEvent {
     fn execute(&self, game: Game) -> Result<Game, ExecuteError> {
-        todo!()
+        Ok(game)
     }
 
     fn undo(&self) -> Result<(), UndoError> {
         todo!()
+    }
+
+    fn get_name(&self) -> String {
+        "CreateGameEvent:".to_string()
     }
 }
 
@@ -26,10 +30,14 @@ pub struct FillBoardEvent {}
 
 impl Event for FillBoardEvent {
     fn execute(&self, game: Game) -> Result<Game, ExecuteError> {
-        todo!()
+        Ok(game)
     }
 
     fn undo(&self) -> Result<(), UndoError> {
         todo!()
+    }
+    
+    fn get_name(&self) -> String {
+        "FillBoardEvent:".to_string()
     }
 }

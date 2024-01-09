@@ -3,6 +3,7 @@ use std::io::BufReader;
 use crate::game::Game;
 use serde::de::DeserializeOwned;
 
+#[derive(Debug)]
 pub struct ExecuteError {
     pub message: String,
     pub step: String,
@@ -12,6 +13,7 @@ pub struct UndoError {}
 pub trait Event {
     fn execute(&self, game: Game) -> Result<Game, ExecuteError>;
     fn undo(&self) -> Result<(), UndoError>;
+    fn get_name(&self) -> String;
 }
 
 pub fn from_str<'a, T>(data: &str) -> Result<Box<dyn Event + 'a>, ExecuteError>
