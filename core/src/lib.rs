@@ -1,4 +1,4 @@
-use std::{env, cmp};
+use std::{cmp, env};
 
 use eventque as eq;
 use eventque::event::{Event, ExecuteError, UndoError};
@@ -9,7 +9,6 @@ mod _board;
 pub mod eventque;
 mod game;
 
-
 fn get_storage() -> String {
     env::var("event_store").unwrap_or("/home/jan/projects/rust-catan/.storage".to_string())
 }
@@ -17,7 +16,7 @@ fn get_storage() -> String {
 pub fn execute<'a>(
     game_idx: String,
     new_event: impl Event + Deserialize<'a> + Serialize + Clone,
-    limit: i32
+    limit: i32,
 ) -> Result<Game, ExecuteError> {
     // load eventstore
     let path = vec![
@@ -36,11 +35,15 @@ pub fn execute<'a>(
     };
     events.push(Box::new(new_event.clone()));
 
-    let max_index = if limit > 0 {cmp::min(limit as usize, events.len())} else {events.len()};
+    let max_index = if limit > 0 {
+        cmp::min(limit as usize, events.len())
+    } else {
+        events.len()
+    };
 
     // execute
     let mut game = Game::new();
-    for event in events.iter().take(max_index){
+    for event in events.iter().take(max_index) {
         game = match event.execute(game) {
             Ok(val) => val,
             Err(err) => {

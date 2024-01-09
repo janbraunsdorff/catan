@@ -1,5 +1,5 @@
-use core::execute;
 use core::eventque::start::CreateGameEvent;
+use core::execute;
 
 #[test]
 fn test_create_game() {
@@ -14,5 +14,4 @@ fn test_create_game() {
         Ok(val) => val,
         Err(err) => panic!("{:?}", err),
     };
-
 }

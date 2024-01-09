@@ -1,6 +1,7 @@
 use std::{
     fs::OpenOptions,
-    io::{BufRead, BufReader, Write}, path::Path,
+    io::{BufRead, BufReader, Write},
+    path::Path,
 };
 
 use serde::Serialize;
@@ -46,14 +47,12 @@ pub fn load_events(path: &String) -> Result<Vec<Box<dyn Event>>, ExecuteError> {
 
         if line_data.len() == 0 {
             break;
-
         }
 
         let event = match parse_line(&line_data) {
             Ok(val) => val,
             Err(err) => return Err(err),
         };
-
 
         events.push(event);
     }
@@ -69,7 +68,6 @@ fn parse_line(line: &str) -> Result<Box<dyn Event>, ExecuteError> {
 
     let mut event_missing_error = "could not find event ".to_string();
     event_missing_error.push_str(event_type);
-
 
     let x: Result<Box<dyn Event>, ExecuteError> = match event_type {
         "CreateGameEvent" => ev::from_str::<CreateGameEvent>(data.as_str()),
@@ -88,7 +86,7 @@ fn parse_line(line: &str) -> Result<Box<dyn Event>, ExecuteError> {
     }
 }
 
-pub fn store_event(path: String, event: impl Event+ Serialize) -> Result<(), ExecuteError> {
+pub fn store_event(path: String, event: impl Event + Serialize) -> Result<(), ExecuteError> {
     let res_file_open = OpenOptions::new().create(true).append(true).open(&path);
 
     let mut queue = match res_file_open {
@@ -113,7 +111,6 @@ pub fn store_event(path: String, event: impl Event+ Serialize) -> Result<(), Exe
 
     let mut serilisation = event.get_name();
     serilisation.push_str(&json_value);
-    
 
     let res_write = queue.write_all(serilisation.as_bytes());
     match res_write {

@@ -36,7 +36,7 @@ impl Event for FillBoardEvent {
     fn undo(&self) -> Result<(), UndoError> {
         todo!()
     }
-    
+
     fn get_name(&self) -> String {
         "FillBoardEvent:".to_string()
     }
