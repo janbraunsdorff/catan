@@ -1,26 +1,28 @@
-use crate::api::state::state;
 use axum::{
     routing::{get, get_service, post},
     Router,
 };
-use tower_http::services::ServeDir;
+use tower_http::{services::ServeDir, cors::CorsLayer};
+use tower_http::trace::TraceLayer;
 
-mod init;
-mod model;
-pub mod state;
+pub mod routes;
+pub mod error;
 
 pub fn create_main_rounter() -> Router {
     let router = Router::new()
         .nest("/game", game())
+        .layer(CorsLayer::permissive())
+        .layer(TraceLayer::new_for_http())
         .fallback_service(routes_static());
+
     router
 }
 
 fn game() -> Router {
     Router::new()
-        .route("/:id/new", post(init::new))
-        .route("/:id/board", post(init::fill))
-        .route("/:id/state", get(state))
+        .route("/:id/create", post(routes::create::new))
+        .route("/:id/board", post(routes::create::fill))
+        .route("/:id/state", get(routes::state::state))
 }
 
 fn routes_static() -> Router {

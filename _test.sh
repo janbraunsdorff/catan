@@ -1,0 +1,1 @@
+cargo watch  -q -c -w ./app  -w ./game -w ./api -x "pretty-test --package game --package app --package api --  --test-threads=1"

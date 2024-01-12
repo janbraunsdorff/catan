@@ -9,10 +9,12 @@ use serde::Serialize;
 pub struct ExternalExecutionError {
     pub step: String,
     pub message: String,
+    #[serde(skip_serializing)]
+    pub status_code: StatusCode,
 }
 
 impl IntoResponse for ExternalExecutionError {
     fn into_response(self) -> Response {
-        (StatusCode::INTERNAL_SERVER_ERROR, Json(&self)).into_response()
+        (self.status_code, Json(&self)).into_response()
     }
 }

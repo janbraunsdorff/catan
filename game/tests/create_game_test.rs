@@ -1,6 +1,6 @@
-use catan_core::eventque::start::CreateGameEvent;
-use catan_core::game::{Color, Player};
-use catan_core::{load, load_and_execute};
+use game::eventque::start::CreateGameEvent;
+use game::game::{Color, Player};
+use game::{load, load_and_execute};
 use std::fs;
 
 #[test]

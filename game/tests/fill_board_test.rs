@@ -1,4 +1,4 @@
-use catan_core::{
+use game::{
     eventque::start::{BuildingEvent, FillBoardEvent, PortEvent, Robber, TileEvent},
     game::{BuildingType, PortType, TileType},
     load, load_and_execute,
@@ -187,4 +187,5 @@ fn test_load_board() {
     assert_eq!(b.streets.len(), 19);
     assert_eq!(b.tiles.len(), 4);
     assert_eq!(b.buildings.len(), 16);
+
 }

@@ -4,7 +4,8 @@
     },
     "rust-analyzer.linkedProjects": [
         "./app/Cargo.toml",
-        "./catan_core/Cargo.toml",
+        "./game/Cargo.toml",
+        "./api/Cargo.toml",
         "./database/Cargo.toml"
     ],
 }

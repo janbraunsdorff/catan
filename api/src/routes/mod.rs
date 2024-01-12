@@ -1,6 +1,9 @@
-pub mod game;
+pub mod create;
+pub mod state;
 
-use catan_core::game::TileType;
+
+
+use game::game::TileType;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]

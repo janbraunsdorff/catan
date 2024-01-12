@@ -1,0 +1,1 @@
+cargo watch -q -c -w ./api -w ./app -w ./database -w ./game -x run  
