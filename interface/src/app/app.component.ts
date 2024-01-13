@@ -1,4 +1,4 @@
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -18,6 +18,7 @@ import { HttpClientModule } from  '@angular/common/http';
         MatButtonModule,
         MatIconModule,
         BoardComponent,
+        RouterModule
     ]
 })
 export class AppComponent {

@@ -66,7 +66,7 @@ export class BuildingService {
       x: (row_shift + column) * (this.config.img_with / 2) * this.config.scale + this.config.padding_x | 0,
       y: row * 152 * this.config.scale + this.config.padding_y + shift | 0,
       color: "#aaa",
-      type: "cottage", // cottage, location_city
+      type: "empty", // cottage, location_city
       x_flatten: column + row_shift,
       y_flatten: row,
       shift: shift != 0
