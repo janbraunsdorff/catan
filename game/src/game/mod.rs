@@ -18,7 +18,7 @@ pub enum TileType {
     Hills,
     Forest,
     Mountains,
-    Fields,
+    Field,
     Pasture,
     Dessert,
     Water,

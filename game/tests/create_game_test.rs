@@ -16,7 +16,7 @@ fn test_create_game_from_event() {
             name: "pc1".to_string(),
             npc: false,
         }],
-        extenstions: vec![],
+        extentiosns: vec![],
     };
     let ex_result = load_and_execute("new_game", event, -1);
 

@@ -28,7 +28,7 @@ pub async fn new(
     let new_event = CreateGameEvent {
         npc: npc,
         player: player,
-        extenstions: payload.extenstions,
+        extentiosns: payload.extentiosns,
     };
 
     let res = game::load_and_execute(id.as_str(), new_event, -1);
@@ -83,7 +83,7 @@ pub struct FillBoardRequest {
 pub struct CreateNewGameRequest {
     pub npc: Vec<PlayerRequest>,
     pub player: Vec<PlayerRequest>,
-    pub extenstions: Vec<String>,
+    pub extentiosns: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize)]

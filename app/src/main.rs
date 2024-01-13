@@ -7,9 +7,10 @@ async fn main() -> Result<(), Error> {
     let listener = TcpListener::bind("127.0.0.1:3000").await.unwrap();
 
     tracing_subscriber::fmt()
-        .with_target(true)
+        .with_target(false)
         .log_internal_errors(true)
-        .with_line_number(true)
+        .with_line_number(false)
+        .with_file(false)
         .with_max_level(tracing::Level::DEBUG)
         .init();
 

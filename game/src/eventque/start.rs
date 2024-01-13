@@ -14,7 +14,7 @@ use crate::game::{BuildingType, Game, Player, PortType, TileType};
 pub struct CreateGameEvent {
     pub npc: Vec<Player>,
     pub player: Vec<Player>,
-    pub extenstions: Vec<String>,
+    pub extentiosns: Vec<String>,
 }
 
 impl Event for CreateGameEvent {
@@ -22,7 +22,7 @@ impl Event for CreateGameEvent {
         let pc = self.player.to_owned();
         let npc = self.npc.to_owned();
         game.players = [pc, npc].concat();
-        game.extenstions = self.extenstions.to_owned();
+        game.extenstions = self.extentiosns.to_owned();
         Ok(game)
     }
 

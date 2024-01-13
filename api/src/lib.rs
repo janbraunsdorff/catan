@@ -1,6 +1,6 @@
 use axum::{
     routing::{get, get_service, post},
-    Router,
+    Router, middleware,
 };
 use tower_http::{services::ServeDir, cors::CorsLayer};
 use tower_http::trace::TraceLayer;
