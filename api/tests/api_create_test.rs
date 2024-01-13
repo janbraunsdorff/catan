@@ -36,7 +36,7 @@ mod test {
                     color: "ORANGE".to_string()
                 },
             ],
-            extenstions: vec![]
+            extentiosns: vec![]
         }).to_string();
 
         let path = "/game/test_new_game/create";
