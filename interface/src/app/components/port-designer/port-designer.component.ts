@@ -3,7 +3,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatDividerModule} from '@angular/material/divider';
 import { PortComponent } from "../board/port/port.component";
 import { ActivatedRoute, Router } from '@angular/router';
-import { Port, PortsService } from '../../service/ports.service';
+import { Port, PortsService } from '../../service/ui/ports.service';
 import {MatButtonModule} from '@angular/material/button';
 
 

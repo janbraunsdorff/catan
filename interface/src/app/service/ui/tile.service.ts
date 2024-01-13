@@ -82,4 +82,49 @@ export class TileService {
       h: this.config.scale * this.config.img_heigt
     }
   }
+
+  create_random(format: string) {
+    if (Array.isArray(format)) {
+      format = format[0]
+    }
+    let format_arr = format.split(",").map(x => +x)
+    let tiles: string[] = []
+    let numbers: number [] = []
+
+    if (Math.max(...format_arr) === 5) {
+      numbers = [2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12]
+      tiles = [
+        "dessert", 
+        "mountains", "mountains", "mountains",
+        "forest", "forest", "forest", "forest",
+        "hills", "hills", "hills",
+        "pasture", "pasture", "pasture", "pasture", 
+        "field", "field", "field", "field",
+      ].map(x => x + ".png")
+    }
+
+    for (let x = 0; x < 10; x++) {
+      tiles = tiles.sort((a, b) => 0.5 - Math.random());
+      numbers = numbers.sort((a, b) => 0.5 - Math.random());
+    }
+
+    let tiles_idx = this.tiles.map(x => x.idx);
+
+    let dessert_offset = 0;
+    for (const [i, idx] of tiles_idx.entries()) {
+      let terra = tiles[i]
+      let number = numbers[i+dessert_offset]
+
+      if (terra === "dessert.png") {
+        this.set_terra(idx, terra)
+        this.set_dice_value(idx, 7)
+        dessert_offset = -1
+        continue
+      }
+
+      this.set_dice_value(idx, number);
+      this.set_terra(idx, terra);
+    }
+
+  }
 }

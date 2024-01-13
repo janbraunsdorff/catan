@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {MatTabChangeEvent, MatTabsModule} from '@angular/material/tabs';
 import { BoardComponent } from "../../components/board/board.component";
-import { BoardService } from '../../service/board.service';
+import { BoardService } from '../../service/ui/board.service';
 import { BoardDesginerComponent } from "../../components/board-desginer/board-desginer.component";
 import { PortDesignerComponent } from '../../components/port-designer/port-designer.component';
 

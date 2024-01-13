@@ -32,12 +32,23 @@
     <mat-divider></mat-divider>
 
     <div class="terra">
-      <img (click)="update_terra('erz.png')" src="assets/images/erz.png"/>
-      <img (click)="update_terra('holz.png')" src="assets/images/holz.png"/>
-      <img (click)="update_terra('lehm.png')" src="assets/images/lehm.png"/>
-      <img (click)="update_terra('schaf.png')" src="assets/images/schaf.png"/>
-      <img (click)="update_terra('weizen.png')" src="assets/images/weizen.png"/>
-      <img (click)="update_terra('wueste.png')" src="assets/images/wueste.png"/>
+      <img (click)="update_terra('mountains.png')" src="assets/images/mountains.png"/>
+      <img (click)="update_terra('forest.png')" src="assets/images/forest.png"/>
+      <img (click)="update_terra('hills.png')" src="assets/images/hills.png"/>
+      <img (click)="update_terra('field.png')" src="assets/images/field.png"/>
+      <img (click)="update_terra('pasture.png')" src="assets/images/pasture.png"/>
+      <img (click)="update_terra('dessert.png')" src="assets/images/dessert.png"/>
     </div>
+  </mat-card-content>
+</mat-card>
+<br>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Random Board</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="random">
+    <mat-divider></mat-divider>
+      <button mat-raised-button color="accent" (click)="tileService.create_random(format)">Create Random Tiles</button>
+      <button mat-raised-button color="warn" (click)="create_Game.create_game(player)">Create Game</button>
   </mat-card-content>
 </mat-card>

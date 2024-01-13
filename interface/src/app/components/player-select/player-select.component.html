@@ -1,0 +1,22 @@
+<div class="player">
+    <div class="player-type">
+        <span>Player Type</span>
+        <mat-form-field>
+            <mat-select #type (openedChange)="this.player_type.emit(type.value)">
+                <mat-option value="none">No Player</mat-option>
+                <mat-option value="npc">Bot</mat-option>
+                <mat-option value="pc">Player</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <span>Color</span>
+        <mat-form-field>
+            <mat-select #color (openedChange)="this.player_color.emit(color.value)">
+                <mat-option value="white">White</mat-option>
+                <mat-option value="orange">Orange</mat-option>
+                <mat-option value="blue">Blue</mat-option>
+                <mat-option value="red">Red</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>

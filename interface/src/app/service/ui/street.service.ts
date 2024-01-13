@@ -33,9 +33,6 @@ export class StreetService {
       return
     }
 
-    console.log("use street algo")
-
-
     let streets = []
     let { updatet_fomat, idx, max_row } = this.extend_format(format)
 

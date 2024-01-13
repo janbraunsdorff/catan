@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Tile } from '../../../service/tile.service';
+import { Tile } from '../../../service/ui/tile.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BoardService } from '../../../service/board.service';
+import { BoardService } from '../../../service/ui/board.service';
 
 
 @Component({

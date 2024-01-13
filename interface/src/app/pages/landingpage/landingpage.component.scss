@@ -1,0 +1,34 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 5em;
+    height: calc(100vh - var(--mat-toolbar-standard-height));
+
+    .option {
+        text-decoration: none;
+        margin: auto 0;
+        border: 1px solid #666;
+        border-radius: 2em;
+        width: 15em;
+        height: 20em;
+        display: flex;
+        flex-direction: column;
+
+        text-align: center;
+        justify-content: center;
+        gap: 1em;
+
+        &:hover{
+            background-color: #666;
+        }
+
+        mat-icon {
+            margin: 0 auto;
+            font-size: 3em;
+            width: auto;
+            height: auto;
+        }
+
+    }
+}

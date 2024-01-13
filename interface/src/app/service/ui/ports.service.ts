@@ -21,7 +21,7 @@ export interface Port {
 export class PortsService {
 
   ports$ = new BehaviorSubject<Port[]>([]);
-  private ports: Port[] = [];
+  ports: Port[] = [];
 
 
 

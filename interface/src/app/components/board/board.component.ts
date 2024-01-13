@@ -1,13 +1,13 @@
 import { Component, Input, OnDestroy, OnInit, ɵɵpipeBind1 } from '@angular/core';
-import { BoardService } from '../../service/board.service';
+import { BoardService } from '../../service/ui/board.service';
 import { TileComponent } from "./tile/tile.component";
 import { BuildingComponent } from "./building/building.component";
 import { StreetComponent } from "./street/street.component";
-import { Tile, TileService } from '../../service/tile.service';
-import { ConfigService } from '../../service/config.service';
-import { Street, StreetService } from '../../service/street.service';
-import { Building, BuildingService } from '../../service/building.service';
-import { Port, PortsService } from '../../service/ports.service';
+import { Tile, TileService } from '../../service/ui/tile.service';
+import { ConfigService } from '../../service/ui/config.service';
+import { Street, StreetService } from '../../service/ui/street.service';
+import { Building, BuildingService } from '../../service/ui/building.service';
+import { Port, PortsService } from '../../service/ui/ports.service';
 import { PortComponent } from "./port/port.component";
 
 

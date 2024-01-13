@@ -1,7 +1,7 @@
 import { AfterViewChecked, AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { BoardService } from '../../../service/board.service';
+import { BoardService } from '../../../service/ui/board.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Street } from '../../../service/street.service';
+import { Street } from '../../../service/ui/street.service';
 
 @Component({
   selector: 'app-street',

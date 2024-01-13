@@ -4,6 +4,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { Component } from '@angular/core';
 import { BoardComponent } from "./components/board/board.component";
+import { HttpClientModule } from  '@angular/common/http';
 
 
 @Component({
@@ -16,7 +17,7 @@ import { BoardComponent } from "./components/board/board.component";
         MatToolbarModule,
         MatButtonModule,
         MatIconModule,
-        BoardComponent
+        BoardComponent,
     ]
 })
 export class AppComponent {

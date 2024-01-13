@@ -24,3 +24,10 @@
         width: 100px;
     }
 }
+
+.random {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    gap: 15px;
+}

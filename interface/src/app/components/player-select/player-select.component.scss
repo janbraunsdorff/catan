@@ -1,0 +1,11 @@
+.player {
+    margin: auto;
+
+    .player-type{
+        margin: auto;
+        padding: 10px;
+        mat-form-field {
+            width: 100%;
+        }
+    }
+}
