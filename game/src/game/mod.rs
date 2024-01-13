@@ -15,13 +15,13 @@ pub enum Color {
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub enum TileType {
-    Hills,
-    Forest,
-    Mountains,
-    Field,
-    Pasture,
-    Dessert,
-    Water,
+    HILLS,
+    FOREST,
+    MOUNTAINS,
+    FIELD,
+    PASTURE,
+    DESSERT,
+    WATER,
 }
 
 #[derive(Serialize, Deserialize, Clone, Copy, Debug, PartialEq)]

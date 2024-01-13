@@ -1,14 +1,14 @@
 use axum::{extract::Path, http::StatusCode, response::IntoResponse, Json};
 use game::{
     self,
-    eventque::start::{CreateGameEvent, FillBoardEvent, Robber},
+    eventque::start::{CreateGameEvent, FillBoardEvent, Robber, TileEvent, PortEvent, BuildingEvent},
     game::{Color, Player},
 };
 
 use crate::error::ExternalExecutionError;
 use serde::{Deserialize, Serialize};
 
-use super::{state::StateResponse, Tile};
+use super::{state::StateResponse, Tile, Port, Building};
 
 
 pub async fn new(
@@ -51,11 +51,31 @@ pub async fn fill(
     Path(id): Path<String>,
     Json(payload): Json<FillBoardRequest>,
 ) -> Result<impl IntoResponse, ExternalExecutionError> {
+
+    let x: Result<Vec<BuildingEvent>, _> = payload.buildings.into_iter().map(|x| x.to_event()).collect();
+    let buildings = match x {
+        Ok(val) => val,
+        Err(err) =>return Err(err),
+    };
+
+    let x: Result<Vec<TileEvent>, _> = payload.tiles.iter().map(|t| t.to_event()).collect();
+    let tiles = match x {
+        Ok(val) => val,
+        Err(err) => return Err(err),
+    };
+
+    let x: Result<Vec<PortEvent>, ExternalExecutionError> = payload.ports.iter().map(|x| x.to_event()).collect();
+    let ports = match x {
+        Ok(val) => val,
+        Err(err) => return Err(err),
+    };
+
+
     let new_event = FillBoardEvent {
-        tiles: vec![],
-        format: vec![],
-        ports: vec![],
-        bulding: vec![],
+        tiles: tiles,
+        format: payload.format,
+        ports: ports,
+        bulding: buildings,
         robber: Robber { x: -1, y: -1 },
     };
     let res = game::load_and_execute(id.as_str(), new_event, -1);
@@ -77,6 +97,9 @@ pub async fn fill(
 #[derive(Serialize, Deserialize)]
 pub struct FillBoardRequest {
     pub tiles: Vec<Tile>,
+    pub format: Vec<u8>,
+    pub ports: Vec<Port>,
+    pub buildings: Vec<Building>
 }
 
 #[derive(Serialize, Deserialize)]
@@ -86,6 +109,7 @@ pub struct CreateNewGameRequest {
     pub extentiosns: Vec<String>,
 }
 
+
 #[derive(Serialize, Deserialize)]
 pub struct PlayerRequest {
     pub name: String,
@@ -94,18 +118,9 @@ pub struct PlayerRequest {
 
 impl PlayerRequest {
     fn to_player(&self, is_npc: bool) -> Result<Player, ExternalExecutionError> {
-        let color = match self.color.to_uppercase().as_str() {
-            "RED" => Color::RED,
-            "BLUE" => Color::BLUE,
-            "ORANGE" => Color::ORANGE,
-            "WHITE" => Color::WHITHE,
-            _ => {
-                return Err(ExternalExecutionError {
-                    status_code: StatusCode::BAD_GATEWAY,
-                    message: "Color is missing or not found".to_string(),
-                    step: "parse player color".to_string(),
-                })
-            }
+        let color = match color_from_string(&self.color) {
+            Ok(val) => val,
+            Err(err) => return Err(err),
         };
 
         Ok(Player {
@@ -122,3 +137,20 @@ impl PlayerRequest {
         player
     }
 }
+
+fn color_from_string(color: &String) -> Result<Color, ExternalExecutionError>{
+    match color.to_uppercase().as_str() {
+        "RED" => Ok(Color::RED),
+        "BLUE" => Ok(Color::BLUE),
+        "ORANGE" => Ok(Color::ORANGE),
+        "WHITE" => Ok(Color::WHITHE),
+        _ => {
+            return Err(ExternalExecutionError {
+                status_code: StatusCode::BAD_GATEWAY,
+                message: "Color is missing or not found".to_string(),
+                step: "parse player color".to_string(),
+            })
+        }
+    }
+}
+

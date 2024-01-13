@@ -43,9 +43,9 @@ impl StateResponse {
             .tiles
             .iter()
             .map(|t| Tile {
-                x: t.corr_x,
-                y: t.corr_y,
-                tile_type: t.kind,
+                x: t.corr_x as i32,
+                y: t.corr_y as i32,
+                tile_type: "str".to_string(),
                 dice_value: t.dice,
             })
             .collect()

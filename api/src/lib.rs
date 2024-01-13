@@ -21,7 +21,7 @@ pub fn create_main_rounter() -> Router {
 fn game() -> Router {
     Router::new()
         .route("/:id/create", post(routes::create::new))
-        .route("/:id/board", post(routes::create::fill))
+        .route("/:id/fill", post(routes::create::fill))
         .route("/:id/state", get(routes::state::state))
 }
 

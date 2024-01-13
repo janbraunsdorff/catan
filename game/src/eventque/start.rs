@@ -46,6 +46,7 @@ pub struct TileEvent {
 pub struct PortEvent {
     pub port_type: PortType,
     pub buildings: [i32; 2],
+    pub flipped: bool
 }
 
 #[derive(Serialize, Deserialize, Clone)]
@@ -118,9 +119,7 @@ impl Event for FillBoardEvent {
         // create Streets
         let streets = create_streets(&self.format, &buildings);
 
-        // TODO:
-
-        game.board = Some(Board::new(tiles, buildings, streets));
+        game.board = Some(Board::new(tiles, buildings, streets, ports));
         Ok(game)
     }
 
