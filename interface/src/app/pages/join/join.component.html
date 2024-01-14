@@ -1,1 +1,11 @@
-<p>join works!</p>
+<mat-list>
+    <div mat-subheader>Games</div>
+    @for (folder of games; track folder) {
+      <mat-list-item>
+        <mat-icon matListItemIcon>folder</mat-icon>
+        <div matListItemTitle>{{folder.name}}</div>
+        <div matListItemLine>{{folder.last_modified | date: "MMM dd. yyy HH:mm:ss"}}</div>
+      </mat-list-item>
+    }
+    <mat-divider></mat-divider>
+  </mat-list>

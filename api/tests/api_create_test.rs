@@ -3,7 +3,7 @@ mod test {
     use std::fs;
     
     use anyhow::{Ok, Result};
-    use api::routes::create::{CreateNewGameRequest, PlayerRequest };
+    use api::routes::designer::create::{CreateNewGameRequest, PlayerRequest};
     use http_body_util::BodyExt; // for `collect`
 
     use axum::{

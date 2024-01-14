@@ -1,6 +1,6 @@
 use axum::{
     routing::{get, get_service, post},
-    Router, middleware,
+    Router,
 };
 use tower_http::{services::ServeDir, cors::CorsLayer};
 use tower_http::trace::TraceLayer;
@@ -20,8 +20,9 @@ pub fn create_main_rounter() -> Router {
 
 fn game() -> Router {
     Router::new()
-        .route("/:id/create", post(routes::create::new))
-        .route("/:id/fill", post(routes::create::fill))
+        .route("/list", get(routes::games::list))
+        .route("/:id/create", post(routes::designer::create::new))
+        .route("/:id/fill", post(routes::designer::fill::fill))
         .route("/:id/state", get(routes::state::state))
 }
 

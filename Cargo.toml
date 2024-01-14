@@ -33,6 +33,7 @@ game ={ path = "./game"}
 api = { path = "./api"}
 tracing = "0.1.37"
 tracing-subscriber = "0.3.16"
+chrono = "0.4.31"
 
 [dev-dependencies]
 tower = { version = "0.4", features = ["util"] }

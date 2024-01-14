@@ -16,6 +16,7 @@ game = {path = "../game"}
 tracing = "0.1.37"
 tracing-subscriber = "0.3.16"
 
+chrono = "0.4.31"
 
 
 [dev-dependencies]
