@@ -46,7 +46,7 @@ pub struct TileEvent {
 pub struct PortEvent {
     pub port_type: PortType,
     pub buildings: [i32; 2],
-    pub flipped: bool
+    pub flipped: bool,
 }
 
 #[derive(Serialize, Deserialize, Clone)]

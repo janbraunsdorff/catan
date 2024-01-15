@@ -10,7 +10,6 @@ mod test {
     };
     use tower::ServiceExt;
 
-
     #[tokio::test]
     async fn test_get_game_state_empty_game() -> Result<()> {
         let path = "/game/002_fill_board_2/state";

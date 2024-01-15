@@ -32,8 +32,20 @@ log = "0.4"
 game ={ path = "./game"}
 api = { path = "./api"}
 tracing = "0.1.37"
-tracing-subscriber = "0.3.16"
+tracing-subscriber = { version = "0.3.18" }
 chrono = "0.4.31"
+
+
+opentelemetry_sdk = {version = "0.21.2", features = ["metrics", "rt-tokio", "trace"]}
+opentelemetry-stdout = {version = "0.2.0", features = ["metrics", "trace"]}
+opentelemetry = {version = "0.21.0", features = ["trace"]}
+tracing-opentelemetry = "0.22.0"
+opentelemetry-otlp = {version = "0.14.0", features = ["metrics", "reqwest", "tonic", "trace", "logs", "http-proto", "reqwest-client"]}
+opentelemetry-prometheus = "0.14.1"
+prometheus = {version = "0.13.3", features = ["reqwest"]}
+opentelemetry-semantic-conventions = "0.13.0"
+
+
 
 [dev-dependencies]
 tower = { version = "0.4", features = ["util"] }

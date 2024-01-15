@@ -188,5 +188,4 @@ fn test_load_board() {
     assert_eq!(b.streets.len(), 19);
     assert_eq!(b.tiles.len(), 4);
     assert_eq!(b.buildings.len(), 16);
-
 }

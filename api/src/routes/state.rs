@@ -6,7 +6,6 @@ use crate::error::ExternalExecutionError;
 
 use super::commen_models::tile::Tile;
 
-
 pub async fn state(Path(id): Path<String>) -> Result<impl IntoResponse, ExternalExecutionError> {
     let res = game::load(id.as_str(), -1);
     let game = match res {
@@ -52,4 +51,3 @@ impl StateResponse {
             .collect()
     }
 }
-

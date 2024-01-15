@@ -1,6 +1,6 @@
 use axum::http::StatusCode;
 use game::{eventque::start::PortEvent, game::PortType};
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 use crate::error::ExternalExecutionError;
 
@@ -8,7 +8,7 @@ use crate::error::ExternalExecutionError;
 pub struct Port {
     pub port_type: String,
     pub port_building: Vec<PortBuilding>,
-    pub flipped: bool
+    pub flipped: bool,
 }
 #[derive(Serialize, Deserialize)]
 pub struct PortBuilding {
@@ -22,14 +22,14 @@ impl Port {
             Ok(val) => val,
             Err(err) => return Err(err),
         };
-        Ok(PortEvent{ 
-            flipped: self.flipped, 
-            port_type: ptype, 
+        Ok(PortEvent {
+            flipped: self.flipped,
+            port_type: ptype,
             buildings: [
-                self.port_building[0].y * 100 + self.port_building[0].x, 
-                self.port_building[1].y * 100 + self.port_building[1].x] 
-            }
-        )
+                self.port_building[0].y * 100 + self.port_building[0].x,
+                self.port_building[1].y * 100 + self.port_building[1].x,
+            ],
+        })
     }
 }
 
@@ -48,5 +48,5 @@ fn port_type_from_string(port_type: &String) -> Result<PortType, ExternalExecuti
                 step: "parse player color".to_string(),
             })
         }
-    } 
+    }
 }

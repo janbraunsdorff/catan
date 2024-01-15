@@ -1,6 +1,6 @@
 use axum::http::StatusCode;
 use game::{eventque::start::TileEvent, game::TileType};
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 use crate::error::ExternalExecutionError;
 
@@ -14,12 +14,12 @@ pub struct Tile {
 
 impl Tile {
     pub fn to_event(&self) -> Result<TileEvent, ExternalExecutionError> {
-        let ttype = match tile_type_from_string(&self.tile_type){
+        let ttype = match tile_type_from_string(&self.tile_type) {
             Ok(val) => val,
             Err(err) => return Err(err),
         };
 
-        Ok(TileEvent{
+        Ok(TileEvent {
             idx: self.y * 100 + self.x,
             x: self.x,
             y: self.y,
@@ -28,7 +28,6 @@ impl Tile {
         })
     }
 }
-
 
 fn tile_type_from_string(tile_type: &String) -> Result<TileType, ExternalExecutionError> {
     match tile_type.to_uppercase().as_str() {
@@ -46,5 +45,5 @@ fn tile_type_from_string(tile_type: &String) -> Result<TileType, ExternalExecuti
                 step: "parse player color".to_string(),
             })
         }
-    } 
+    }
 }

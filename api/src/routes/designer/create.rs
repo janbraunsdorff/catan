@@ -8,8 +8,6 @@ use game::{
 use crate::{error::ExternalExecutionError, routes::state::StateResponse};
 use serde::{Deserialize, Serialize};
 
-
-
 pub async fn new(
     Path(id): Path<String>,
     Json(payload): Json<CreateNewGameRequest>,
@@ -45,18 +43,12 @@ pub async fn new(
     Ok((StatusCode::OK, Json(StateResponse::from(game))))
 }
 
-
-
-
-
-
 #[derive(Serialize, Deserialize)]
 pub struct CreateNewGameRequest {
     pub npc: Vec<PlayerRequest>,
     pub player: Vec<PlayerRequest>,
     pub extentiosns: Vec<String>,
 }
-
 
 #[derive(Serialize, Deserialize)]
 pub struct PlayerRequest {
@@ -86,7 +78,7 @@ impl PlayerRequest {
     }
 }
 
-fn color_from_string(color: &String) -> Result<Color, ExternalExecutionError>{
+fn color_from_string(color: &String) -> Result<Color, ExternalExecutionError> {
     match color.to_uppercase().as_str() {
         "RED" => Ok(Color::RED),
         "BLUE" => Ok(Color::BLUE),
@@ -101,4 +93,3 @@ fn color_from_string(color: &String) -> Result<Color, ExternalExecutionError>{
         }
     }
 }
-

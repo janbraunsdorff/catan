@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 pub mod eventque;
 pub mod game;
 
-fn get_storage_path() -> String{
+fn get_storage_path() -> String {
     env::var("event_store").unwrap_or("/home/jan/projects/rust-catan/.storage".to_string())
 }
 

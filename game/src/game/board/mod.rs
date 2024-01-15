@@ -1,7 +1,6 @@
 use std::rc::Rc;
 
-use self::{building::Building, street::Street, tiles::Tile, ports::Port};
-
+use self::{building::Building, ports::Port, street::Street, tiles::Tile};
 
 pub mod building;
 pub mod ports;
@@ -17,12 +16,17 @@ pub struct Board {
 }
 
 impl Board {
-    pub fn new(tiles: Vec<Tile>, buildings: Vec<Rc<Building>>, streets: Vec<Street>, ports: Vec<Rc<Port>>) -> Board {
+    pub fn new(
+        tiles: Vec<Tile>,
+        buildings: Vec<Rc<Building>>,
+        streets: Vec<Street>,
+        ports: Vec<Rc<Port>>,
+    ) -> Board {
         Board {
             tiles: tiles,
             buildings: buildings,
             streets: streets,
-            ports: ports
+            ports: ports,
         }
     }
 }

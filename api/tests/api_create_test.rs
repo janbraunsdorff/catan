@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod test {
     use std::fs;
-    
+
     use anyhow::{Ok, Result};
     use api::routes::designer::create::{CreateNewGameRequest, PlayerRequest};
     use http_body_util::BodyExt; // for `collect`
@@ -37,11 +37,11 @@ mod test {
                 },
             ],
             extentiosns: vec![]
-        }).to_string();
+        })
+        .to_string();
 
         let path = "/game/test_new_game/create";
         let app = api::create_main_rounter();
-
 
         let response = app
             .oneshot(
@@ -57,7 +57,6 @@ mod test {
         fs::remove_file("../.storage/test_new_game.jsonl").unwrap();
 
         assert_eq!(response.status(), 200);
-
 
         Ok(())
     }
