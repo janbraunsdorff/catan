@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  jeager:
+    image:  jaegertracing/all-in-one:latest
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    ports:
+      - 16686:16686 # UI
+      - 4317:4317 # gRPC incoming
+      - 4318:4318 # HTTP incoming
+      - 14269:14269 # export to prometheus
+
+  prometheus:
+    image: quay.io/prometheus/prometheus:v2.34.0
+    command: --config.file=/etc/prometheus/prometheus.yml --no-scrape.adjust-timestamps
+    volumes:
+      - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
