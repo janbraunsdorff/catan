@@ -48,18 +48,9 @@ pub enum BuildingType {
     TOWN,
 }
 
+#[derive(Default)]
 pub struct Game {
     pub board: Option<Board>,
     pub players: Vec<Player>,
     pub extenstions: Vec<String>,
-}
-
-impl Game {
-    pub fn new() -> Game {
-        Game {
-            board: None,
-            players: Vec::new(),
-            extenstions: Vec::new(),
-        }
-    }
 }

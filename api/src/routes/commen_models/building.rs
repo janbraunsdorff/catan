@@ -31,12 +31,10 @@ fn buildingtype_from_string(color: String) -> Result<BuildingType, ExternalExecu
         "EMPTY" => Ok(BuildingType::EMPTY),
         "SETTELMENT" => Ok(BuildingType::SETTELMENT),
         "TOWN" => Ok(BuildingType::TOWN),
-        _ => {
-            return Err(ExternalExecutionError {
-                status_code: StatusCode::BAD_GATEWAY,
-                message: "building type is missing or not found".to_string(),
-                step: "parse building color".to_string(),
-            })
-        }
+        _ => Err(ExternalExecutionError {
+            status_code: StatusCode::BAD_GATEWAY,
+            message: "building type is missing or not found".to_string(),
+            step: "parse building color".to_string(),
+        }),
     }
 }

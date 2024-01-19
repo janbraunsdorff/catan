@@ -16,32 +16,28 @@ pub struct Building {
     pub port: Option<Rc<Port>>,
 }
 
-pub fn create_buildings(dims: &Vec<u8>, port: &Vec<Rc<Port>>) -> Vec<Rc<Building>> {
+pub fn create_buildings(dims: &Vec<u8>, port: &[Rc<Port>]) -> Vec<Rc<Building>> {
     let max_columns = dims.iter().max().unwrap();
     let first_half = dims.iter().position(|x| x == max_columns).unwrap();
 
     let updatad_dims = [
         &dims[0..first_half],
-        &vec![*max_columns],
+        &[*max_columns],
         &dims[first_half..dims.len()],
     ]
     .concat();
 
     let mut buildings = Vec::new();
 
-    for row in 0..updatad_dims.len() {
-        let row_shift = max_columns - updatad_dims[row];
+    for (row, column) in updatad_dims.iter().enumerate() {
+        let row_shift = max_columns - column;
 
-        for i in 0..(updatad_dims[row] * 2) + 1 {
+        for i in 0..(column * 2) + 1 {
             let idx = (row * 100) as i32 + (row_shift + i) as i32;
-            let port: Option<Rc<Port>> =
-                match port.into_iter().filter(|x| x.building_idx == idx).next() {
-                    Some(val) => Some(Rc::clone(val)),
-                    None => None,
-                };
+            let port: Option<Rc<Port>> = port.iter().find(|x| x.building_idx == idx).map(Rc::clone);
             let b = Building {
-                port: port,
-                idx: idx,
+                port,
+                idx,
                 corr_y: row as u8,
                 corr_x: row_shift + i,
                 building_type: BuildingType::EMPTY,
@@ -55,12 +51,12 @@ pub fn create_buildings(dims: &Vec<u8>, port: &Vec<Rc<Port>>) -> Vec<Rc<Building
 }
 
 pub fn verify_buldings(
-    buildings: &Vec<Rc<Building>>,
+    buildings: &[Rc<Building>],
     target_coordinates: Vec<(i32, i32)>,
 ) -> Result<(), ExecuteError> {
     for (x, y) in target_coordinates {
         let idx = y * 100 + x;
-        let building = buildings.iter().filter(|x| x.idx == idx).next();
+        let building = buildings.iter().find(|x| x.idx == idx);
         match building {
             Some(_) => (),
             None => {

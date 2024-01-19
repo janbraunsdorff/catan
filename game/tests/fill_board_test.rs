@@ -141,33 +141,30 @@ fn test_fill_board() {
         Err(err) => panic!("{:?}", err),
     };
 
-    assert_eq!(res.board.is_none(), false);
+    assert!(res.board.is_some());
 
     let b = res.board.unwrap();
     assert_eq!(b.streets.len(), 19);
     assert_eq!(b.tiles.len(), 4);
     assert_eq!(b.buildings.len(), 16);
 
-    assert_eq!(
-        b.buildings
-            .iter()
-            .filter(|x| x.idx == 101)
-            .next()
-            .unwrap()
-            .port
-            .is_none(),
-        false
-    );
-    let port = b.buildings.iter().filter(|x| x.idx == 101).next().unwrap();
+    assert!(b
+        .buildings
+        .iter()
+        .find(|x| x.idx == 101)
+        .unwrap()
+        .port
+        .is_some());
+    let port = b.buildings.iter().find(|x| x.idx == 101).unwrap();
     let x = match &port.as_ref().port {
-        Some(val) => (*val).port_type,
+        Some(val) => val.port_type,
         None => panic!(""),
     };
     assert_eq!(x, PortType::ANY);
 
-    let port = b.buildings.iter().filter(|x| x.idx == 102).next().unwrap();
+    let port = b.buildings.iter().find(|x| x.idx == 102).unwrap();
     let x = match &port.as_ref().port {
-        Some(val) => (*val).port_type,
+        Some(val) => val.port_type,
         None => panic!(""),
     };
     assert_eq!(x, PortType::ANY);
@@ -182,7 +179,7 @@ fn test_load_board() {
         Err(err) => panic!("{:?}", err),
     };
 
-    assert_eq!(res.board.is_none(), false);
+    assert!(res.board.is_some());
 
     let b = res.board.unwrap();
     assert_eq!(b.streets.len(), 19);

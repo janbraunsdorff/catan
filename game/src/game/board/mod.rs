@@ -23,10 +23,10 @@ impl Board {
         ports: Vec<Rc<Port>>,
     ) -> Board {
         Board {
-            tiles: tiles,
-            buildings: buildings,
-            streets: streets,
-            ports: ports,
+            tiles,
+            buildings,
+            streets,
+            ports,
         }
     }
 }

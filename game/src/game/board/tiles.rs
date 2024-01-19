@@ -16,9 +16,9 @@ pub struct Tile {
 
 pub fn create_tiles(
     dims: &Vec<u8>,
-    buildings: &Vec<Rc<Building>>,
-    dice_values: &Vec<u8>,
-    kinds: &Vec<TileType>,
+    buildings: &[Rc<Building>],
+    dice_values: &[u8],
+    kinds: &[TileType],
     robber_x: i32,
     robber_y: i32,
 ) -> Vec<Tile> {
@@ -38,45 +38,39 @@ pub fn create_tiles(
                 corr_y: y,
                 buildings: vec![
                     Rc::clone(
-                        &buildings
+                        buildings
                             .iter()
-                            .filter(|b| b.corr_x == x + 0 && b.corr_y == y)
-                            .next()
+                            .find(|b| b.corr_x == x && b.corr_y == y)
                             .unwrap(),
                     ),
                     Rc::clone(
-                        &buildings
+                        buildings
                             .iter()
-                            .filter(|b| b.corr_x == x + 1 && b.corr_y == y)
-                            .next()
+                            .find(|b| b.corr_x == x + 1 && b.corr_y == y)
                             .unwrap(),
                     ),
                     Rc::clone(
-                        &buildings
+                        buildings
                             .iter()
-                            .filter(|b| b.corr_x == x + 2 && b.corr_y == y)
-                            .next()
+                            .find(|b| b.corr_x == x + 2 && b.corr_y == y)
                             .unwrap(),
                     ),
                     Rc::clone(
-                        &buildings
+                        buildings
                             .iter()
-                            .filter(|b| b.corr_x == x + 0 && b.corr_y == y + 1)
-                            .next()
+                            .find(|b| b.corr_x == x && b.corr_y == y + 1)
                             .unwrap(),
                     ),
                     Rc::clone(
-                        &buildings
+                        buildings
                             .iter()
-                            .filter(|b| b.corr_x == x + 1 && b.corr_y == y + 1)
-                            .next()
+                            .find(|b| b.corr_x == x + 1 && b.corr_y == y + 1)
                             .unwrap(),
                     ),
                     Rc::clone(
-                        &buildings
+                        buildings
                             .iter()
-                            .filter(|b| b.corr_x == x + 2 && b.corr_y == y + 1)
-                            .next()
+                            .find(|b| b.corr_x == x + 2 && b.corr_y == y + 1)
                             .unwrap(),
                     ),
                 ],
@@ -92,12 +86,12 @@ pub fn create_tiles(
 }
 
 pub fn verify_tiles(
-    tiles: &Vec<Tile>,
+    tiles: &[Tile],
     target_coordinates: Vec<(i32, i32)>,
 ) -> Result<(), ExecuteError> {
     for (x, y) in target_coordinates {
         let idx = y * 100 + x;
-        let building = tiles.iter().filter(|x| x.idx == idx).next();
+        let building = tiles.iter().find(|x| x.idx == idx);
         match building {
             Some(_) => (),
             None => {

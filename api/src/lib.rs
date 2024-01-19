@@ -5,7 +5,8 @@ use axum::{
 };
 use tower_http::{cors::CorsLayer, services::ServeDir};
 
-use std::time::Duration;
+use core::fmt;
+use std::{time::Duration, borrow::Borrow, task::{Poll, Context}};
 
 use axum::{
     body::Bytes,
@@ -20,59 +21,60 @@ mod middleware;
 pub mod routes;
 
 pub fn create_main_rounter() -> Router {
-    let x = TraceLayer::new_for_http()
-        .make_span_with(|request: &Request<Body>| {
-            // Log the matched route's path (with placeholders not filled in).
-            // Use request.uri() or OriginalUri if you want the real path.
-            let matched_path = request
-                .extensions()
-                .get::<MatchedPath>()
-                .map(MatchedPath::as_str);
 
-            info_span!(
-                "request",
-                method = ?request.method(),
-                matched_path,
-                req_body_len = tracing::field::Empty,
-                res_body_len = tracing::field::Empty,
-                res_time = tracing::field::Empty,
-                res_status = tracing::field::Empty,
-            )
-        })
-        .on_request(|_request: &Request<Body>, _span: &Span| {
-            _span.record("req_body_len", _request.body().size_hint().lower());
-        })
-        .on_response(
-            |_response: &Response<Body>, _latency: Duration, _span: &Span| {
-                _span.record("req_body_len", _response.body().size_hint().lower());
-                _span.record("res_time", format!("{:.0?}", _latency));
-                _span.record("res_status", format!("{:.0?}", _response.status()));
-                info!("request successfull")
-            },
-        )
-        .on_body_chunk(|_chunk: &Bytes, _latency: Duration, _span: &Span| {
-            _span.record("chunk_lengt", _chunk.len());
-            // ...
-        })
-        .on_eos(
-            |_trailers: Option<&HeaderMap>, _stream_duration: Duration, _span: &Span| {
-                // ...
-            },
-        )
-        .on_failure(
-            |_error: ServerErrorsFailureClass, _latency: Duration, _span: &Span| {
-                // ...
-            },
-        );
+    let tracer = TraceLayer::new_for_http()
+        .make_span_with(make_span)
+        .on_request( on_request)
+        .on_response(on_response)
+        .on_body_chunk(on_body_chunk)
+        .on_eos(on_eos)
+        .on_failure(on_failure);
 
-    let router = Router::new()
+    Router::new()
         .nest("/game", game())
         .layer(CorsLayer::permissive())
-        .layer(x)
-        .fallback_service(routes_static());
+        .layer(tracer)
+        .fallback_service(routes_static())
+}
 
+fn on_failure(_error: ServerErrorsFailureClass, _latency: Duration, _span: &Span) {
+    
+}
 
-    router
+fn on_eos(_trailers: Option<&HeaderMap>, _stream_duration: Duration, _span: &Span) {
+
+}
+
+fn on_body_chunk(_chunk: &Bytes, _latency: Duration, _span: &Span) {
+    _span.record("chunk_lengt", _chunk.len());
+}
+
+fn on_request(_request: &Request<Body>, _span: &Span){
+    _span.record("req_body_len", _request.body().size_hint().lower());
+}
+
+fn on_response(_response: &Response<Body>, _latency: Duration, _span: &Span) {
+    _span.record("req_body_len", _response.body().size_hint().lower());
+    _span.record("res_time", format!("{:.0?}", _latency));
+    _span.record("res_status", format!("{:.0?}", _response.status()));
+    info!("request successfull")
+}
+
+fn make_span(request: &Request<Body>) -> Span {
+    let matched_path = request
+    .extensions()
+    .get::<MatchedPath>()
+    .map(MatchedPath::as_str);
+
+    info_span!(
+        "request",
+        method = ?request.method(),
+        matched_path,
+        req_body_len = tracing::field::Empty,
+        res_body_len = tracing::field::Empty,
+        res_time = tracing::field::Empty,
+        res_status = tracing::field::Empty,
+    )
 }
 
 fn game() -> Router {

@@ -14,8 +14,8 @@ fn get_storage_path() -> String {
 
 fn get_storage(game_idx: &str) -> String {
     let base_path = get_storage_path();
-    let path = vec![base_path.as_str(), "/", game_idx, ".jsonl"].join("");
-    return path;
+    let path = [base_path.as_str(), "/", game_idx, ".jsonl"].join("");
+    path
 }
 
 fn execute<'a>(
@@ -23,7 +23,7 @@ fn execute<'a>(
     new_event: impl Event + Deserialize<'a> + Serialize + Clone,
     game: Game,
 ) -> Result<Game, ExecuteError> {
-    let path = get_storage(&game_idx);
+    let path = get_storage(game_idx);
 
     let updated_game = match new_event.execute(game) {
         Ok(val) => val,
@@ -49,11 +49,11 @@ fn store<'a>(
     let x = eq::store_event(path, new_event.clone());
     match x {
         Ok(_) => Ok(()),
-        Err(err) => return Err(err),
+        Err(err) => Err(err),
     }
 }
 
-pub fn load<'a>(game_idx: &str, limit: i32) -> Result<Game, ExecuteError> {
+pub fn load(game_idx: &str, limit: i32) -> Result<Game, ExecuteError> {
     let path = get_storage(game_idx);
     let events_ = eq::load_events(&path);
 
@@ -69,7 +69,7 @@ pub fn load<'a>(game_idx: &str, limit: i32) -> Result<Game, ExecuteError> {
     };
 
     // execute
-    let mut game = Game::new();
+    let mut game = Game::default();
     for event in events.iter().take(max_index) {
         game = match event.execute(game) {
             Ok(val) => val,
@@ -95,10 +95,7 @@ pub fn load_and_execute<'a>(
         Err(err) => return Err(err),
     };
 
-    match execute(game_idx, new_event, game) {
-        Ok(val) => Ok(val),
-        Err(err) => Err(err),
-    }
+    execute(game_idx, new_event, game)
 }
 
 pub fn undo() -> Result<(), UndoError> {

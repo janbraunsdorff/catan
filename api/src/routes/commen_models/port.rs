@@ -33,7 +33,7 @@ impl Port {
     }
 }
 
-fn port_type_from_string(port_type: &String) -> Result<PortType, ExternalExecutionError> {
+fn port_type_from_string(port_type: &str) -> Result<PortType, ExternalExecutionError> {
     match port_type.to_uppercase().as_str() {
         "ANY" => Ok(PortType::ANY),
         "WOOL" => Ok(PortType::WOOL),
@@ -41,12 +41,10 @@ fn port_type_from_string(port_type: &String) -> Result<PortType, ExternalExecuti
         "GRAIN" => Ok(PortType::GRAIN),
         "ORE" => Ok(PortType::ORE),
         "BRICKS" => Ok(PortType::BRICKS),
-        _ => {
-            return Err(ExternalExecutionError {
-                status_code: StatusCode::BAD_GATEWAY,
-                message: "Color is missing or not found".to_string(),
-                step: "parse player color".to_string(),
-            })
-        }
+        _ => Err(ExternalExecutionError {
+            status_code: StatusCode::BAD_GATEWAY,
+            message: "Color is missing or not found".to_string(),
+            step: "parse player color".to_string(),
+        }),
     }
 }

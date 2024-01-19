@@ -23,8 +23,8 @@ pub async fn new(
     };
 
     let new_event = CreateGameEvent {
-        npc: npc,
-        player: player,
+        npc,
+        player,
         extentiosns: payload.extentiosns,
     };
 
@@ -64,7 +64,7 @@ impl PlayerRequest {
         };
 
         Ok(Player {
-            color: color,
+            color,
             name: self.name.clone(),
             npc: is_npc,
         })
@@ -78,18 +78,16 @@ impl PlayerRequest {
     }
 }
 
-fn color_from_string(color: &String) -> Result<Color, ExternalExecutionError> {
+fn color_from_string(color: &str) -> Result<Color, ExternalExecutionError> {
     match color.to_uppercase().as_str() {
         "RED" => Ok(Color::RED),
         "BLUE" => Ok(Color::BLUE),
         "ORANGE" => Ok(Color::ORANGE),
         "WHITE" => Ok(Color::WHITHE),
-        _ => {
-            return Err(ExternalExecutionError {
-                status_code: StatusCode::BAD_GATEWAY,
-                message: "Color is missing or not found".to_string(),
-                step: "parse player color".to_string(),
-            })
-        }
+        _ => Err(ExternalExecutionError {
+            status_code: StatusCode::BAD_GATEWAY,
+            message: "Color is missing or not found".to_string(),
+            step: "parse player color".to_string(),
+        }),
     }
 }

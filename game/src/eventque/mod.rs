@@ -20,7 +20,7 @@ pub fn load_events(path: &String) -> Result<Vec<Box<dyn Event>>, ExecuteError> {
         return Ok(vec![]);
     }
 
-    let res_file_open = OpenOptions::new().read(true).open(&path);
+    let res_file_open = OpenOptions::new().read(true).open(path);
 
     let file = match res_file_open {
         Ok(file) => file,
@@ -45,7 +45,7 @@ pub fn load_events(path: &String) -> Result<Vec<Box<dyn Event>>, ExecuteError> {
             }
         };
 
-        if line_data.len() == 0 {
+        if line_data.is_empty() {
             break;
         }
 
@@ -61,7 +61,7 @@ pub fn load_events(path: &String) -> Result<Vec<Box<dyn Event>>, ExecuteError> {
 }
 
 fn parse_line(line: &str) -> Result<Box<dyn Event>, ExecuteError> {
-    let parts: Vec<&str> = line.split(":").collect();
+    let parts: Vec<&str> = line.split(':').collect();
     let event_type = parts[0];
 
     let data = parts[1..].join(":");
@@ -87,7 +87,7 @@ fn parse_line(line: &str) -> Result<Box<dyn Event>, ExecuteError> {
 }
 
 pub fn store_event(path: String, event: impl Event + Serialize) -> Result<(), ExecuteError> {
-    let res_file_open = OpenOptions::new().create(true).append(true).open(&path);
+    let res_file_open = OpenOptions::new().create(true).append(true).open(path);
 
     let mut queue = match res_file_open {
         Ok(file) => file,

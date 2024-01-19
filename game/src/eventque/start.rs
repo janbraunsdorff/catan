@@ -76,20 +76,19 @@ impl Event for FillBoardEvent {
         let ports: Vec<Rc<Port>> = self
             .ports
             .iter()
-            .map(|x| {
+            .flat_map(|x| {
                 vec![
                     Port {
-                        port_type: x.port_type.clone(),
+                        port_type: x.port_type,
                         building_idx: x.buildings[0],
                     },
                     Port {
-                        port_type: x.port_type.clone(),
+                        port_type: x.port_type,
                         building_idx: x.buildings[1],
                     },
                 ]
             })
-            .flatten()
-            .map(|x| Rc::new(x))
+            .map(Rc::new)
             .collect();
         // create Buildings
         let buildings = create_buildings(&self.format, &ports);
@@ -100,12 +99,14 @@ impl Event for FillBoardEvent {
             Err(err) => return Err(err),
         }
 
-        // create Tiles
+        let dices: Vec<u8> = self.tiles.iter().map(|x| x.dice).collect();
+        let tiles_type: Vec<TileType> = self.tiles.iter().map(|x| x.tile_type).collect();
+
         let tiles = create_tiles(
             &self.format,
             &buildings,
-            &self.tiles.iter().map(|x| x.dice).collect(),
-            &self.tiles.iter().map(|x| x.tile_type).collect(),
+            dices.as_slice(),
+            tiles_type.as_slice(),
             self.robber.x,
             self.robber.y,
         );

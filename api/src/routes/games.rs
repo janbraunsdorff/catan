@@ -17,9 +17,11 @@ fn get_storage_path() -> String {
 }
 
 pub async fn list() -> Result<impl IntoResponse, ExternalExecutionError> {
-    let _ = tracing::info_span!("list an collect games").or_current().entered();
+    let _ = tracing::info_span!("list an collect games")
+        .or_current()
+        .entered();
     let dir = fs::read_dir(get_storage_path()).unwrap();
-    let files: Vec<Game> = dir.into_iter().map(|x| Game::from(x)).collect();
+    let files: Vec<Game> = dir.into_iter().map(Game::from).collect();
     Ok((StatusCode::OK, Json(files)))
 }
 
@@ -46,7 +48,7 @@ impl From<Result<DirEntry, Error>> for Game {
         let datetime: DateTime<Utc> = modified.into();
 
         Game {
-            name: name,
+            name,
             last_modified: datetime.format("%m/%d/%y %H:%M:%S").to_string(),
         }
     }

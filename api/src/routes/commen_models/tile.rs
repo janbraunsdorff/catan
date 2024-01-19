@@ -29,7 +29,7 @@ impl Tile {
     }
 }
 
-fn tile_type_from_string(tile_type: &String) -> Result<TileType, ExternalExecutionError> {
+fn tile_type_from_string(tile_type: &str) -> Result<TileType, ExternalExecutionError> {
     match tile_type.to_uppercase().as_str() {
         "HILLS" => Ok(TileType::HILLS),
         "FOREST" => Ok(TileType::FOREST),
@@ -38,12 +38,10 @@ fn tile_type_from_string(tile_type: &String) -> Result<TileType, ExternalExecuti
         "PASTURE" => Ok(TileType::PASTURE),
         "DESSERT" => Ok(TileType::DESSERT),
         "WATER" => Ok(TileType::WATER),
-        _ => {
-            return Err(ExternalExecutionError {
-                status_code: StatusCode::BAD_GATEWAY,
-                message: "Color is missing or not found".to_string(),
-                step: "parse player color".to_string(),
-            })
-        }
+        _ => Err(ExternalExecutionError {
+            status_code: StatusCode::BAD_GATEWAY,
+            message: "Color is missing or not found".to_string(),
+            step: "parse player color".to_string(),
+        }),
     }
 }

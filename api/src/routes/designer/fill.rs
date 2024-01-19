@@ -41,9 +41,9 @@ pub async fn fill(
     };
 
     let new_event = FillBoardEvent {
-        tiles: tiles,
+        tiles,
         format: payload.format,
-        ports: ports,
+        ports,
         bulding: buildings,
         robber: Robber { x: -1, y: -1 },
     };
