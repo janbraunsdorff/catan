@@ -1,3 +1,4 @@
+use std::thread;
 use std::time::Duration;
 
 use axum::Error;
@@ -17,10 +18,13 @@ use opentelemetry_sdk::trace::config;
 use tokio::net::TcpListener;
 
 use opentelemetry_sdk::{metrics::MeterProvider, Resource};
+use tracing::info;
 use tracing::level_filters::LevelFilter;
-use tracing_opentelemetry::OpenTelemetryLayer;
+use tracing_opentelemetry::{OpenTelemetryLayer, MetricsLayer};
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::{Layer, Registry};
+
+
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
@@ -28,6 +32,10 @@ async fn main() -> Result<(), Error> {
     let listener = TcpListener::bind("0.0.0.0:4000").await.unwrap();
 
     init_tracer_subscriber();
+
+    info!(counter.info = 1);
+    info!(counter.info = 1);
+    info!(counter.info = 1);
 
     axum::serve(listener, api::create_main_rounter())
         .await
@@ -47,14 +55,21 @@ fn init_tracer_subscriber() {
         .with_filter(LevelFilter::INFO);
 
     let tracer = init_tracer().unwrap();
+    let meter = init_metrics().unwrap();
     let otel_layer = OpenTelemetryLayer::new(tracer).with_filter(LevelFilter::INFO);
+    let otel_layer_meter = MetricsLayer::new(meter).with_filter(LevelFilter::INFO);
 
-    let subscriber = Registry::default().with(layer_logging).with(otel_layer);
+
+    let subscriber = Registry::default().with(layer_logging).with(otel_layer).with(otel_layer_meter);
 
     tracing::subscriber::set_global_default(subscriber).expect("unable to set global subscriber");
+    
 }
 fn init_tracer() -> Result<opentelemetry_sdk::trace::Tracer, TraceError> {
     // trace: Single Request
+
+    let endpoint = "http://localhost:4317".to_string(); // Jaeger
+    // let endpoint = "http://localhost:4320".to_string(); // oltp
 
     global::set_text_map_propagator(TraceContextPropagator::new());
     let os_resource = OsResourceDetector.detect(Duration::from_secs(0));
@@ -69,7 +84,7 @@ fn init_tracer() -> Result<opentelemetry_sdk::trace::Tracer, TraceError> {
 
     let exporter = opentelemetry_otlp::new_exporter()
         .tonic()
-        .with_endpoint("http://localhost:4317".to_string());
+        .with_endpoint(endpoint);
 
     opentelemetry_otlp::new_pipeline()
         .tracing()
@@ -87,6 +102,7 @@ fn init_tracer() -> Result<opentelemetry_sdk::trace::Tracer, TraceError> {
         .install_batch(runtime::Tokio)
 }
 
+#[warn(dead_code)]
 fn init_metrics() -> opentelemetry::metrics::Result<MeterProvider> {
     let export_config = ExportConfig {
         endpoint: "http://localhost:4317".to_string(),
@@ -104,6 +120,7 @@ fn init_metrics() -> opentelemetry::metrics::Result<MeterProvider> {
             "basic-otlp-metrics-example",
         )]))
         .build()
+    
 }
 
 fn init_logs() -> Result<opentelemetry_sdk::logs::Logger, LogError> {

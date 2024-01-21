@@ -5,8 +5,7 @@ use axum::{
 };
 use tower_http::{cors::CorsLayer, services::ServeDir};
 
-use core::fmt;
-use std::{time::Duration, borrow::Borrow, task::{Poll, Context}};
+use std::time::Duration;
 
 use axum::{
     body::Bytes,

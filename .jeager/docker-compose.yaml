@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  jeager:
+    image:  jaegertracing/all-in-one:latest
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+      # - METRICS_STORAGE_TYPE=prometheus
+      # - PROMETHEUS_SERVER_URL=http://prometheus:9090
+    ports:
+      - 16686:16686 # UI
+      - 16685:16685
+      - 4317:4317 # gRPC incoming
+      - 4318:4318 # HTTP incoming
+      - 14268:14268 # export to prometheus
+      - 14250:14250 # export to prometheus

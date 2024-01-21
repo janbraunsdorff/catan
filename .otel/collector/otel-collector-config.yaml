@@ -2,28 +2,26 @@ receivers:
   otlp:
     protocols:
       grpc:
-        endpoint: 0.0.0.0:4319
+        endpoint: 0.0.0.0:4317
       http:
-        endpoint: 0.0.0.0:4320
+        endpoint: 0.0.0.0:4318
 
-connectors:
-  spanmetrics:
-    namespace: span.metrics
-
+processors:
+  batch:
+    timeout: 1s
 
 exporters:
-  prometheusremotewrite:
-    endpoint: prometheus:9090/api/v1/write
-    target_info:
-      enabled: true
-
-  logging:
-    loglevel: debug
-
   otlp:
     endpoint: "jeager:4317"
     tls:
       insecure: true
+
+  logging:
+    loglevel: debug
+
+  prometheus:
+    endpoint: collector:8889
+    send_timestamps: true
 
 extensions:
   health_check:
@@ -35,13 +33,13 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      processors: []
-      exporters: [logging, otlp, spanmetrics]
+      processors: [batch]
+      exporters: [logging, otlp]
     metrics:
-      receivers: [otlp, spanmetrics]
-      processors: []
-      exporters: [logging, prometheusremotewrite]
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [logging, prometheus]
     logs:
       receivers: [otlp]
-      processors: []
+      processors: [batch]
       exporters: [logging]
