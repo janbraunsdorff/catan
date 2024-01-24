@@ -53,7 +53,7 @@ fn on_request(_request: &Request<Body>, _span: &Span){
 }
 
 fn on_response(_response: &Response<Body>, _latency: Duration, _span: &Span) {
-    _span.record("req_body_len", _response.body().size_hint().lower());
+    _span.record("res_body_len", _response.body().size_hint().lower());
     _span.record("res_time", format!("{:.0?}", _latency));
     _span.record("res_status", format!("{:.0?}", _response.status()));
     info!("request successfull")

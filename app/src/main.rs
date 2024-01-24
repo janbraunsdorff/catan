@@ -1,3 +1,4 @@
+use core::time;
 use std::thread;
 use std::time::Duration;
 
@@ -22,9 +23,8 @@ use tracing::info;
 use tracing::level_filters::LevelFilter;
 use tracing_opentelemetry::{OpenTelemetryLayer, MetricsLayer};
 use tracing_subscriber::layer::SubscriberExt;
+use prometheus::{Encoder, TextEncoder};
 use tracing_subscriber::{Layer, Registry};
-
-
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
@@ -33,9 +33,11 @@ async fn main() -> Result<(), Error> {
 
     init_tracer_subscriber();
 
-    info!(counter.info = 1);
-    info!(counter.info = 1);
-    info!(counter.info = 1);
+
+
+    // info!(counter.info = 1);
+    // info!(counter.info = 1);
+    // info!(counter.info = 1);
 
     axum::serve(listener, api::create_main_rounter())
         .await
@@ -66,10 +68,7 @@ fn init_tracer_subscriber() {
     
 }
 fn init_tracer() -> Result<opentelemetry_sdk::trace::Tracer, TraceError> {
-    // trace: Single Request
-
-    let endpoint = "http://localhost:4317".to_string(); // Jaeger
-    // let endpoint = "http://localhost:4320".to_string(); // oltp
+    let endpoint = "http://localhost:4317".to_string();
 
     global::set_text_map_propagator(TraceContextPropagator::new());
     let os_resource = OsResourceDetector.detect(Duration::from_secs(0));

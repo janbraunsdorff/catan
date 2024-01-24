@@ -11,18 +11,36 @@ processors:
     timeout: 1s
 
 exporters:
-  otlp:
-    endpoint: "jeager:4317"
-    tls:
-      insecure: true
+  prometheus:
+    endpoint: "0.0.0.0:8889"
 
   logging:
     loglevel: debug
 
-  prometheus:
-    endpoint: collector:8889
-    send_timestamps: true
+  otlp:
+    endpoint: jeager:4317
+    tls:
+      insecure: true
 
+  loki:
+    endpoint: http://loki:3100/loki/api/v1/push
+  
+  prometheusremotewrite:
+    endpoint: http://localhost:9090/api/v1/write
+    target_info:
+      enabled: true
+
+connectors:
+  spanmetrics:
+    namespace: span.metrics
+    histogram:
+      explicit:
+        buckets: [100us, 1ms, 2ms, 6ms, 10ms, 100ms, 250ms]
+    dimensions:
+      - name: req_body_len
+      - name: res_body_len
+      - name: res_status
+# 0,00579
 extensions:
   health_check:
   pprof:
@@ -34,9 +52,9 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [logging, otlp]
+      exporters: [logging, otlp, spanmetrics]
     metrics:
-      receivers: [otlp]
+      receivers: [otlp, spanmetrics]
       processors: [batch]
       exporters: [logging, prometheus]
     logs:

@@ -1,25 +1,26 @@
 use std::{
     env,
     fs::{self, DirEntry},
-    io::Error,
+    io::Error, os::unix::thread,
 };
 
 use chrono::offset::Utc;
 use chrono::DateTime;
 
 use axum::{http::StatusCode, response::IntoResponse, Json};
+use rand::Rng;
 use serde::{Deserialize, Serialize};
+use tracing::instrument;
 
 use crate::error::ExternalExecutionError;
 
+#[instrument]
 fn get_storage_path() -> String {
     env::var("event_store").unwrap_or("/home/jan/projects/rust-catan/.storage".to_string())
 }
 
+#[instrument]
 pub async fn list() -> Result<impl IntoResponse, ExternalExecutionError> {
-    let _ = tracing::info_span!("list an collect games")
-        .or_current()
-        .entered();
     let dir = fs::read_dir(get_storage_path()).unwrap();
     let files: Vec<Game> = dir.into_iter().map(Game::from).collect();
     Ok((StatusCode::OK, Json(files)))
@@ -32,7 +33,11 @@ pub struct Game {
 }
 
 impl From<Result<DirEntry, Error>> for Game {
+    #[instrument]
     fn from(value: Result<DirEntry, Error>) -> Self {
+        let rng: u64 =  rand::thread_rng().gen_range(600..1000);
+        std::thread::sleep(std::time::Duration::from_millis(rng));
+        
         let dir = match value {
             Ok(val) => val,
             Err(_) => {

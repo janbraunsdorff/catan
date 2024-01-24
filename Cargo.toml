@@ -45,7 +45,7 @@ opentelemetry-semantic-conventions = "0.13.0"
 opentelemetry-http = {version = "0.10.0", features = ["hyper", "tokio", "reqwest"]}
 
 openssl = { version = "0.10.62", features = ["vendored"] }
-
+rand = "0.8"
 
 [dev-dependencies]
 tower = { version = "0.4", features = ["util"] }

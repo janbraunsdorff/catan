@@ -11,5 +11,4 @@ services:
       - 16685:16685
       - 4317:4317 # gRPC incoming
       - 4318:4318 # HTTP incoming
-      - 14268:14268 # export to prometheus
-      - 14250:14250 # export to prometheus
+      - 14269:14269 # export to prometheus
